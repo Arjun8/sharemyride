@@ -1,0 +1,151 @@
+.text-center {
+  text-align: center;
+}
+.nav1
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+#loggedin
+{
+  width:30%;
+  margin-top:25px;
+  margin-left:30px;
+}
+#hello2
+{
+  display: flex;
+  height:600px;
+}
+.drawer-option {
+  padding: 16px;
+}
+#matrix
+{
+  display: none;
+  width: 80%;
+  margin-left:130px;
+  margin-top:25px;
+}
+#front,#front1{
+  width:90%;
+  height:50%;
+  margin: 20px auto;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height:312px;
+  text-align: center;
+}
+.mdl-card__supporting-text
+{
+  font-size:25px;
+}
+#next,#previous
+{
+  width: 54px;
+  height: 54px;
+  min-width: initial;
+  }
+#previous
+{
+  position:absolute; top:40%; left:0;
+}
+#next
+{
+  position:absolute; top:40%; right:0;
+}
+#logon
+{
+  display:none;
+  text-align: center;
+  margin:0 auto;
+  margin-top:30px;
+  }
+  #ride2
+  {
+    display: none;
+  }
+#form1,#error
+{
+  text-align:center;
+  display: none;
+  margin:0 auto;
+  margin-top:30px;
+  width:30%;
+  height:80%;
+}
+#map,#map1
+{
+  display: none;
+  margin-top: 25px;
+  margin-left: 25px;
+  width: 70%;
+  height: 500px;
+  background-color: grey;
+}
+#ride_map
+{
+  display: flex;
+}
+#f_ride,#ride2
+{
+  display: none;
+  text-align: center;
+  margin-top:25px;
+  margin-left:25px;
+}
+.hello
+{
+margin-top:110px;
+height: 240px;
+}
+mdl-button.mdl-button--twitter {
+  color: rgb(63, 81, 181)
+}
+.mdl-button.mdl-button--twitter:focus:not(:active) {
+  background-color: #00acee
+}
+.mdl-button--raised.mdl-button--twitter {
+  background: #00acee;
+  color: rgb(255, 255, 255)
+}
+.mdl-button--raised.mdl-button--twitter:hover {
+  background-color: #00acee
+}
+.mdl-button--raised.mdl-button--twitter:active {
+  background-color: #00acee
+}
+.mdl-button--raised.mdl-button--twitter:focus:not(:active) {
+  background-color: #00acee
+}
+.mdl-button--raised.mdl-button--twitter .mdl-ripple {
+  background: rgb(255, 255, 255)
+}.mdl-button.mdl-button--facebook {
+  color: rgb(63, 81, 181)
+}
+.mdl-button.mdl-button--facebook:focus:not(:active) {
+  background-color: #3b5998
+}
+.mdl-button--raised.mdl-button--facebook {
+  background: #3b5998;
+  color: rgb(255, 255, 255)
+}
+.mdl-button--raised.mdl-button--facebook:hover {
+  background-color: #3b5998
+}
+.mdl-button--raised.mdl-button--facebook:active {
+  background-color: #3b5998
+}
+.mdl-button--raised.mdl-button--facebook:focus:not(:active) {
+  background-color: #3b5998
+}
+.mdl-button--raised.mdl-button--facebook .mdl-ripple {
+  background: rgb(255, 255, 255)
+}
