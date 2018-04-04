@@ -1,30 +1,29 @@
-var map, infoWindow, autocomplete2, autocomplete1, marker, marker2, marker1, directionsService, directionsDisplay, service;
-
+var map, infoWindow1, autocomplete2, autocomplete1, marker, marker2, marker1, directionsService, directionsDisplay, service;
 function fillinAddress2() {
     var place = autocomplete2.getPlace();
     marker2.setPosition(place.geometry.location);
 }
 
 function fillinAddress1() {
-    infoWindow.close();
+    infoWindow1.close();
     marker.setVisible(false);
     var place = autocomplete1.getPlace();
     marker1.setPosition(place.geometry.location);
 }
 
-function initMap() {
+function initMap1() {
     service = new google.maps.DistanceMatrixService();
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: -34.397,
-            lng: 150.644
+       center: {
+            lat: 31.2186,
+            lng: 75.7725
         },
         zoom: 10
     });
     directionsDisplay.setMap(map);
-    infoWindow = new google.maps.InfoWindow;
+    infoWindow1 = new google.maps.InfoWindow;
     var pos = {};
     var a = "";
     var b = "";
@@ -53,7 +52,7 @@ function initMap() {
             d = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + a + "," + b + "&key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk";
             $.getJSON(d, function (data) {
                 adress = data.results[0].formatted_address;
-                infoWindow.setContent(adress);
+                infoWindow1.setContent(adress);
             });
             var circle = new google.maps.Circle({
                 center: pos,
@@ -77,27 +76,27 @@ function initMap() {
             autocomplete2.addListener('place_changed', fillinAddress2);
             autocomplete1.setBounds(circle.getBounds());
             autocomplete2.setBounds(circle.getBounds());
-            infoWindow.setPosition(pos);
-            infoWindow.open(map);
+            infoWindow1.setPosition(pos);
+            infoWindow1.open(map);
             map.setCenter(pos);
         }, function () {
-            handleLocationError(true, infoWindow, map.getCenter());
+            handleLocationError(true, infoWindow1, map.getCenter());
         });
         $("#from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
         });
     } else {
         // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+        handleLocationError(false, infoWindow1, map.getCenter());
     }
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
+function handleLocationError(browserHasGeolocation, infoWindow1, pos) {
+    infoWindow1.setPosition(pos);
+    infoWindow1.setContent(browserHasGeolocation ?
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
+    infoWindow1.open(map);
 }
 $("#search1").click(function () {
     $("#matrix").show();
@@ -149,5 +148,5 @@ $("#search1").click(function () {
         }
     });
 });
-google.maps.event.addDomListener(window, 'load', initMap);
+google.maps.event.addDomListener(window, 'load', initMap1);
 

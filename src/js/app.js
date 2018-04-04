@@ -1,5 +1,29 @@
 $(document).ready(function () {
     $("#error").hide();
+    $("#error4").hide();
+    $("#log_in").click(function(e){
+        e.preventDefault();
+        $("#error4").show();
+        var formData = $("#log_form").serialize();
+      //  console.log(formData);
+        $.ajax({
+            type: "POST",
+            url: "login.php",
+            data: formData,
+            cache: false,
+        }).done(function (html) {
+            if(html==='redirect')
+            {
+                window.location.href="index.php";
+            }
+            else
+            {
+             //   alert("hello");
+                $("#error5").empty().append(html);
+               // console.log(html);
+            }
+        });
+    });
     $("#cone").click(function (e) {
         e.preventDefault();
         $("#error").show();

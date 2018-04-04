@@ -2,12 +2,10 @@
 session_start();
 include('common.php');
 global $errors;
-$missingEmail = '<p><strong>Please enter your email address!</strong></p>';
-$missingPassword = '<p><strong>Please enter a Password!</strong></p>';
-$invalidEmail='<p><strong>Please enter a valid email!</strong></p>';
-$invalidPassword = '<p><strong>Your password should be at least 6 characters long and inlcude one capital letter and one number!</strong></p>';
-if(isset($_POST["log_in"]))
-{
+$missingEmail = '<h2><strong>Please enter your email address!</strong></h2>';
+$missingPassword = '<h2><strong>Please enter a Password!</strong></h2>';
+$invalidEmail='<h2><strong>Please enter a valid email!</strong></h2>';
+$invalidPassword = '<h2><strong>Your password should be at least 6 characters long and inlcude one capital letter and one number!</strong></h2>';
 	if(empty($_POST["email12"])){
 		$errors .= $missingEmail;
 	}else{
@@ -20,9 +18,9 @@ if(isset($_POST["log_in"]))
 		}
 	if($errors)
 	{
-		$resultMessage = '<div class="alert alert-danger">' . $errors .'</div>';
+		$resultMessage =  $errors;
 		echo $resultMessage;
-		exit;
+		//alert("hello");
 	}
 	else
 	{
@@ -34,23 +32,24 @@ if(isset($_POST["log_in"]))
 		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 		if(!$result)
 		{
-		echo"<p>There was error in executing the query</p>";
+		echo"<h2>There was error in executing the query</p>";
 		}
 		$results = mysqli_num_rows($result);
 		if($results!=1)
 		{
-			echo"<p>Wrong email or password</p>";
+			echo '<h2 class="mdl-text mdl-color-text--primary">Wrong email or password</h2>';
+			//alert("hello");
 		}
 		else
 		{
-				//echo '<p>Hello'.$row["email"].'</p>';
+				//echo '<h2>Hello'.$row["email"].'</p>';
+				echo "redirect";
 				$_SESSION["email"] = $row["email"];
 				$_SESSION["firstname"] = $row["first_name"];
 				$_SESSION["lastname"] = $row["last_name"];
 				$_SESSION["logout"]=false;
 				$_SESSION["phonenumber"]=$row["phonenumber"];
-				header("location: index.php");
+
 		}
 	}
-}
 ?>

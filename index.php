@@ -12,9 +12,7 @@
   <link rel="manifest" href="/manifest.json">
 <link rel="stylesheet" href="src/css/getmdl-select.min.css">
 <script defer src="src/js/getmdl-select.min.js"></script>
-<script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk&libraries=places">
-        </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk&libraries=places"></script>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:800,700" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -59,12 +57,20 @@
       </nav>
     </div>
     <div class="grid">
+    <div class="mdl-cell-12-col"  id="redirect1">
+      <div  class="mdl-card mdl-shadow--2dp" id="error4" style="margin:0 auto;margin-top:10px;width:80%;">
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                <h2 class="mdl-card__title-text">Errors</h2>
+                </div>
+                <div class="mdl-card__supporting-text" style="text-align:center;" id="error5">
+              </div>
+          </div>
             <div class="mdl-card mdl-shadow--6dp" id="logon">
               <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                 <h2 class="mdl-card__title-text">Log In</h2>
               </div>
               <div class="mdl-card__supporting-text">
-                <form action="login.php" method="POST">
+                <form id="log_form" >
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="email" id="email1" name="email12" />
                     <label class="mdl-textfield__label" for="username">Email</label>
@@ -74,12 +80,13 @@
                     <label class="mdl-textfield__label" for="userpass">Password</label>
                   </div>
                   <div class="mdl-card__actions">
-                  <input type="submit" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" value="Log in" name="log_in">
+                  <input type="submit" class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="log_in" value="Log in" name="log_in">
                   <button class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect">Forget Password?</button>
                     </div>
                 </form>
               </div>
       </div>
+          </div>
       <div class="mdl-cell-12-col" style="display:flex;" id="redirect">
       <div  class="mdl-card mdl-shadow--2dp" id="error">
         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
@@ -110,7 +117,6 @@
                       <input class="mdl-textfield__input" type="password" id="passw" name="password"  />
                       <label class="mdl-textfield__label" for="username">Password</label>
                     </div>
-
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="password" id="passw2"name="password2"  />
                       <label class="mdl-textfield__label" for="username">Confirm Password</label>
@@ -167,14 +173,11 @@
               <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search1">Search</button>
             </div>
       </div>
-      <div class="mdl-card mdl-shadow--6dp " id="map"></div>
-      </div>
-      <div class="mdl-cell-12-col" style="display:flex;">
-         <div class="mdl-card mdl-shadow--6dp " id="ride2">
+      <div class="mdl-card mdl-shadow--6dp " id="ride2">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Offer a ride</h2>
             </div>
-            <div class="mdl-card__supporting-text" style="height:260px;">
+            <div class="mdl-card__supporting-text" style="height:280px;">
               <form action="#" >
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" />
@@ -188,14 +191,18 @@
                     <label style="margin-left:0px;" for="username">Date Of Journey</label>
                   <input class="mdl-textfield__input" type="text" id="off_date"/>
                   </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label style="margin-left:0px;" for="username">Time Of Journey</label>
+                  <input class="mdl-textfield__input" type="time" id="off_time" value="12:00" min="<?php time()?>"/>
+                  </div>
               </form>
             </div>
             <div class="mdl-card__actions ">
               <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search2">Continue!</button>
             </div>
       </div>
-      <div class="mdl-card mdl-shadow--6dp " id="map1"></div>
-          </div>
+      <div class="mdl-card mdl-shadow--6dp " id="map"></div>
+      </div>
       <?php if(!isset($_SESSION['email'])){echo
       '<div id="first">
     <div class="demo-card-wide mdl-cell mdl-card mdl-shadow--2dp" id="front">
@@ -357,8 +364,6 @@
 <script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
 <script src="src/js/map.js">
- </script>
- <script src="src/js/map1.js">
  </script>
  <script>
   $(document).ready(function(){

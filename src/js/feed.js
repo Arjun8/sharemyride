@@ -34,7 +34,7 @@ $(document).ready(
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#ride2').show();
-      $("#map1").show();
+      $("#map").show();
       e.preventDefault();
     });
     $("#sign_up ,#sign_up1").click(function (e) {
