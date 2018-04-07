@@ -1,6 +1,7 @@
-var map, infoWindow1, autocomplete2, autocomplete1, marker, marker2, marker1, directionsService, directionsDisplay, service;
+var map, infoWindow1, autocomplete2, autocomplete1,autocomplete3,autocomplete4, marker, marker2, marker1, directionsService, directionsDisplay, service;
 function fillinAddress2() {
     var place = autocomplete2.getPlace();
+    console.log(place);
     marker2.setPosition(place.geometry.location);
 }
 
@@ -8,6 +9,7 @@ function fillinAddress1() {
     infoWindow1.close();
     marker.setVisible(false);
     var place = autocomplete1.getPlace();
+    console.log(place);
     marker1.setPosition(place.geometry.location);
 }
 
@@ -37,6 +39,8 @@ function initMap1() {
     });
     var input1 = document.getElementById("from");
     var input2 = document.getElementById('to');
+    var input3 = document.getElementById("off_from");
+    var input4 = document.getElementById('off_to');
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             pos = {
@@ -58,24 +62,46 @@ function initMap1() {
                 center: pos,
                 radius: position.coords.accuracy
             });
+            var defaultBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(31.280674, 75.687843),
+                new google.maps.LatLng(30.978235, 75.584792));
             autocomplete1 = new google.maps.places.Autocomplete(input1, {
+                types: ['geocode'],
+                bounds: defaultBounds,
+                });
+            autocomplete2 = new google.maps.places.Autocomplete(input2, {
                 types: ['geocode']
             });
-            autocomplete2 = new google.maps.places.Autocomplete(input2, {
+            autocomplete3 = new google.maps.places.Autocomplete(input3, {
+                types: ['geocode']
+            }); autocomplete4 = new google.maps.places.Autocomplete(input4, {
                 types: ['geocode']
             });
             autocomplete1.setTypes(['(cities)']);
             autocomplete1.setComponentRestrictions({
                 'country': 'in'
             });
+            autocomplete1.setBounds
             autocomplete1.addListener('place_changed', fillinAddress1);
             autocomplete2.setTypes(['(cities)']);
             autocomplete2.setComponentRestrictions({
                 'country': 'in'
             });
             autocomplete2.addListener('place_changed', fillinAddress2);
+            autocomplete3.setTypes(['(cities)']);
+            autocomplete3.setComponentRestrictions({
+                'country': 'in'
+            });
+            autocomplete3.addListener('place_changed', fillinAddress2);
+            autocomplete4.setTypes(['(cities)']);
+            autocomplete4.setComponentRestrictions({
+                'country': 'in'
+            });
+            autocomplete4.addListener('place_changed', fillinAddress2);
             autocomplete1.setBounds(circle.getBounds());
             autocomplete2.setBounds(circle.getBounds());
+            autocomplete3.setBounds(circle.getBounds());
+            autocomplete4.setBounds(circle.getBounds());
             infoWindow1.setPosition(pos);
             infoWindow1.open(map);
             map.setCenter(pos);

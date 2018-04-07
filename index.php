@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="src/css/getmdl-select.min.css">
 <script defer src="src/js/getmdl-select.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk&libraries=places"></script>
+<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.min.css" type="text/css" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:800,700" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -177,8 +178,8 @@
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Offer a ride</h2>
             </div>
-            <div class="mdl-card__supporting-text" style="height:280px;">
-              <form action="#" >
+            <div class="mdl-card__supporting-text"  style="height:345px;">
+              <form id="offer_form" >
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" />
                   <label class="mdl-textfield__label" for="username">From</label>
@@ -188,12 +189,18 @@
                     <label class="mdl-textfield__label" for="username">To</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="number" id="seats" min="1"/>
+                    <label class="mdl-textfield__label" for="username">No. of Seats</label>
+                  </div>
+                  <div styel="display:flex;">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                     <label style="margin-left:0px;" for="username">Date Of Journey</label>
                   <input class="mdl-textfield__input" type="text" id="off_date"/>
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
                     <label style="margin-left:0px;" for="username">Time Of Journey</label>
-                  <input class="mdl-textfield__input" type="time" id="off_time" value="12:00" min="<?php time()?>"/>
+                  <input class="mdl-textfield__input" type="time" id="off_time" />
+                  </div>
                   </div>
               </form>
             </div>
@@ -355,20 +362,34 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-  <script
-  src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"
-  integrity="sha256-oTyWrNiP6Qftu4vs2g0RPCKr3g1a6QTlITNgoebxRc4="
-  crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/black-tie/jquery-ui.css">
 <script src="src/js/app.js"></script>
 <script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
-<script src="src/js/map.js">
- </script>
+<script src="src/js/map.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
  <script>
   $(document).ready(function(){
-$(function(){
- $("#off_date").datepicker({ minDate: new Date(Date.now())});
-} )}); </script>
+var a=new Date(Date.now());
+if(a.getHours()<10||a.getMinutes()<10)
+{
+  a="0"+a.getHours()+":"+"0"+a.getMinutes();
+}
+else
+{
+  a=a.getHours()+":"+a.getMinutes();
+}
+a=a.toString();
+console.log(typeof(a));
+console.log(a.toString());
+$("#off_time").val(a).attr({"min":a});
+$("#off_date").datepicker({format:"dd/mm/yyyy",
+  orientation:"bottom",
+  startDate:'+0d',
+  stratView:'+0d',
+  todayBtn:"linked",
+  todayHighlight:"true",
+  value:'+0d'});
+}); </script>
  </body>
 </html>
