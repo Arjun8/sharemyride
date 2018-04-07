@@ -1,18 +1,24 @@
-var map, infoWindow1, autocomplete2, autocomplete1,autocomplete3,autocomplete4, marker, marker2, marker1, directionsService, directionsDisplay, service;
+var map, infoWindow1, autocomplete2, autocomplete1,autocomplete3,autocomplete4, marker, marker2, marker1,marker3,marker4,directionsService, directionsDisplay, service;
 function fillinAddress2() {
     var place = autocomplete2.getPlace();
-    console.log(place);
     marker2.setPosition(place.geometry.location);
 }
-
+function fillinAddress4() {
+    var place = autocomplete4.getPlace();
+    marker4.setPosition(place.geometry.location);
+}
 function fillinAddress1() {
     infoWindow1.close();
     marker.setVisible(false);
     var place = autocomplete1.getPlace();
-    console.log(place);
     marker1.setPosition(place.geometry.location);
 }
-
+function fillinAddress3() {
+    infoWindow1.close();
+    marker.setVisible(false);
+    var place = autocomplete3.getPlace();
+    marker3.setPosition(place.geometry.location);
+}
 function initMap1() {
     service = new google.maps.DistanceMatrixService();
     directionsService = new google.maps.DirectionsService();
@@ -37,6 +43,8 @@ function initMap1() {
     marker1 = new google.maps.Marker({
         map: map,
     });
+    marker3=new google.maps.Marker({map:map});
+    marker4=new google.maps.Marker({map:map});
     var input1 = document.getElementById("from");
     var input2 = document.getElementById('to');
     var input3 = document.getElementById("off_from");
@@ -92,12 +100,12 @@ function initMap1() {
             autocomplete3.setComponentRestrictions({
                 'country': 'in'
             });
-            autocomplete3.addListener('place_changed', fillinAddress2);
+            autocomplete3.addListener('place_changed', fillinAddress3);
             autocomplete4.setTypes(['(cities)']);
             autocomplete4.setComponentRestrictions({
                 'country': 'in'
             });
-            autocomplete4.addListener('place_changed', fillinAddress2);
+            autocomplete4.addListener('place_changed', fillinAddress4);
             autocomplete1.setBounds(circle.getBounds());
             autocomplete2.setBounds(circle.getBounds());
             autocomplete3.setBounds(circle.getBounds());
@@ -109,6 +117,9 @@ function initMap1() {
             handleLocationError(true, infoWindow1, map.getCenter());
         });
         $("#from").focus(function () {
+            $(this).parent().get(0).MaterialTextfield.change(adress);
+        });
+        $("#off_from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
         });
     } else {
@@ -130,6 +141,56 @@ $("#search1").click(function () {
     var otig = $("#from").val();
     marker1.setVisible(false);
     marker2.setVisible(false);
+    marker.setVisible(false);
+    var h = {
+        origin: desti,
+        destination: otig,
+        travelMode: 'DRIVING',
+        drivingOptions: {
+            departureTime: new Date(Date.now() + 360000),
+            trafficModel: 'pessimistic'
+        },
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
+    service.getDistanceMatrix({
+        origins: [desti],
+        destinations: [otig],
+        travelMode: 'DRIVING',
+        drivingOptions: {
+            departureTime: new Date(Date.now() + 360000),
+        }
+    }, function (response, status) {
+        if (status == 'OK') {
+            var origins = response.originAddresses;
+            var destinations = response.destinationAddresses;
+
+            for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                    var element = results[j];
+                    var distance = element.distance.text;
+                    var duration = element.duration.text;
+                    var from = origins[i];
+                    var to = destinations[j];
+                    $("#details").text("Distance and time required between " + from + " and " + to + ".");
+                    $("#distance").text("Distance: " + distance);
+                    $("#time").text("Duration: " + duration);
+                }
+            }
+        }
+    });
+    directionsService.route(h, function (result, status) {
+        if (status == 'OK') {
+            directionsDisplay.setDirections(result);
+        }
+    });
+});
+$("#search2").click(function () {
+    $("#matrix").show();
+    var desti = $("#off_to").val();
+    var otig = $("#off_from").val();
+    marker3.setVisible(false);
+    marker4.setVisible(false);
     marker.setVisible(false);
     var h = {
         origin: desti,

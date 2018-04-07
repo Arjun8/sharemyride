@@ -154,6 +154,7 @@
                   <input class="mdl-textfield__input" type="text" id="from" placeholder="From" required/>
                   <label class="mdl-textfield__label" for="username">From</label>
                 </div>
+                <div style="dispay:none">Errors</div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="to" placeholder="To" required/>
                     <label class="mdl-textfield__label" for="username">To</label>
