@@ -23,6 +23,8 @@ $(document).ready(
     $('#ride').click(function () {
       $("#first").hide();
       $("#error").hide();
+      $("#error4").hide();
+google.maps.event.addDomListener(window, 'load', initMap1);
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#f_ride').show();
@@ -30,6 +32,7 @@ $(document).ready(
     });
     $('#off_ride').click(function (e) {
       $("#first").hide();
+google.maps.event.addDomListener(window, 'load', initMap1);
       $("#error").hide();
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();

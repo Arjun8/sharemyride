@@ -138,24 +138,28 @@
               <h2 class="mdl-card__title-text"><i class="material-icons">settings </i> Distance And Time</h2>
             </div>
             <div class="mdl-card__supporting-text" style="height:260px;">
-              <h5 id="details" style="text-align:center;"></h5>
+              <h5 id="details_from" style="text-align:center;"></h5>
+              <h5 id="details_to" style="text-align:center;"></h5>
               <h5 id="distance" style="text-align:center;">Distance:</h5>
               <h5 id="time" style="text-align:center;">Time:</h5>
-            </div>
-        </div>
+            </div> </div>
+
+                  <div class="mdl-card mdl-shadoq--2dp" style="display:none;text-align:center;margin:0 auto" id="off_errors">
+
+                  </div>
+       
         <div class="mdl-cell-12-col" id="ride_map">
          <div class="mdl-card mdl-shadow--6dp " id="f_ride">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Find a ride</h2>
+              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Find a ride</h2> 
             </div>
-            <div class="mdl-card__supporting-text" style="height:260px;">
+            <div class="mdl-card__supporting-text" style="height:300px;">
               <form action="#" >
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="from" placeholder="From" required/>
                   <label class="mdl-textfield__label" for="username">From</label>
                 </div>
-                <div style="dispay:none">Errors</div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="to" placeholder="To" required/>
                     <label class="mdl-textfield__label" for="username">To</label>
                   </div>
@@ -179,28 +183,32 @@
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Offer a ride</h2>
             </div>
-            <div class="mdl-card__supporting-text"  style="height:345px;">
+            <div class="mdl-card__supporting-text">
               <form id="offer_form" >
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" />
+                  <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" name="off_from"/>
                   <label class="mdl-textfield__label" for="username">From</label>
                 </div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="off_to" placeholder="To" />
+                    <input class="mdl-textfield__input" type="text" id="off_to" placeholder="To" name="off_to"/>
                     <label class="mdl-textfield__label" for="username">To</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="number" id="seats" min="1"/>
+                    <input class="mdl-textfield__input" type="text" id="pickup" placeholder="Pickup" name="pickup"/>
+                    <label class="mdl-textfield__label" for="username">Pickup</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="number" id="seats" min="1" name="seats"/>
                     <label class="mdl-textfield__label" for="username">No. of Seats</label>
                   </div>
                   <div styel="display:flex;">
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
-                    <label style="margin-left:0px;" for="username">Date Of Journey</label>
-                  <input class="mdl-textfield__input" type="text" id="off_date"/>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username">Date Of Journey</label>
+                  <input class="mdl-textfield__input" type="text" id="off_date" name="off_date"/>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
-                    <label style="margin-left:0px;" for="username">Time Of Journey</label>
-                  <input class="mdl-textfield__input" type="time" id="off_time" />
+                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username">Time Of Journey</label>
+                  <input class="mdl-textfield__input" type="time" id="off_time"  name="off_time"/>
                   </div>
                   </div>
               </form>
@@ -209,7 +217,7 @@
               <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search2">Continue!</button>
             </div>
       </div>
-      <div class="mdl-card mdl-shadow--6dp " id="map"></div>
+      <div class="mdl-card mdl-shadow--6dp" style="height:575px;"  id="map"></div>
       </div>
       <?php if(!isset($_SESSION['email'])){echo
       '<div id="first">
@@ -363,6 +371,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <script src="src/js/app.js"></script>
 <script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
@@ -370,9 +379,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
  <script>
-  $(document).ready(function(){
 var a=new Date(Date.now());
-if(a.getHours()<10||a.getMinutes()<10)
+console.log(a.toUTCString());
+if(a.getHours()<10)
+{
+  a="0"+a.getHours()+":"+a.getMinutes();;
+}
+else if(a.getMinutes()<10)
+{
+  a=a.getHours()+":"+"0"+a.getMinutes();
+}
+else if(a.getHours()<10 && a.getMinutes()<10)
 {
   a="0"+a.getHours()+":"+"0"+a.getMinutes();
 }
@@ -383,14 +400,16 @@ else
 a=a.toString();
 console.log(typeof(a));
 console.log(a.toString());
+var f;
+f=new Date(Date.now());
+console.log(f);
 $("#off_time").val(a).attr({"min":a});
 $("#off_date").datepicker({format:"dd/mm/yyyy",
-  orientation:"bottom",
-  startDate:'+0d',
-  stratView:'+0d',
+  orientation:"right top",
+  setDate: '+0d',
+   startDate:'+0d',
   todayBtn:"linked",
-  todayHighlight:"true",
-  value:'+0d'});
-}); </script>
+  todayHighlight:"true"}).datepicker('setDate',new Date(Date.now()));
+</script>
  </body>
 </html>
