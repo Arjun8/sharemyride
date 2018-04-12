@@ -8,6 +8,9 @@ function fillinAddress2() {
 function fillinAddress4() {
     var place = autocomplete4.getPlace();
     marker4.setPosition(place.geometry.location);
+    $("#to_lat").val(place.geometry.location.lat());
+    $("#to_lang").val(place.geometry.location.lng());
+    console.log(place.geometry.location.lat());
 }
 
 function fillinAddress5() {
@@ -27,6 +30,8 @@ function fillinAddress3() {
     marker.setVisible(false);
     var place = autocomplete3.getPlace();
     marker3.setPosition(place.geometry.location);
+    $("#from_lat").val(place.geometry.location.lat());
+    $("#from_lang").val(place.geometry.location.lng());
 }
 
 function initMap1() {
@@ -85,6 +90,8 @@ function initMap1() {
             });
             a = (position.coords.latitude);
             b = (position.coords.longitude);
+            $("#from_lat").val(a);
+    $("#from_lang").val(b);
             d = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + a + "," + b + "&key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk";
             $.getJSON(d, function (data) {
                 adress = data.results[0].formatted_address;
@@ -220,74 +227,121 @@ $("#search1").click(function () {
     });
 });
 $("#search2").click(function (e) {
-            var formdata = $("#offer_form").serialize();
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "ride.php",
-                data: formdata,
-                cache: false
-            }).done(
-                function (html) {
-                    if (html === "continue") {
-                        $("#matrix").show();
-                        var desti = $("#off_to").val();
-                        var otig = $("#off_from").val();
-                        marker3.setVisible(false);
-                        marker4.setVisible(false);
-                        marker.setVisible(false);
-                        var h = {
-                            origin: desti,
-                            destination: otig,
-                            travelMode: 'DRIVING',
-                            drivingOptions: {
-                                departureTime: new Date(Date.now() + 360000),
-                                trafficModel: 'pessimistic'
-                            },
-                            unitSystem: google.maps.UnitSystem.METRIC
-                        };
-                        service.getDistanceMatrix({
-                            origins: [desti],
-                            destinations: [otig],
-                            travelMode: 'DRIVING',
-                            drivingOptions: {
-                                departureTime: new Date(Date.now() + 360000),
-                            }
-                        }, function (response, status) {
-                            if (status == 'OK') {
-                                var origins = response.originAddresses;
-                                var destinations = response.destinationAddresses;
+    var formdata = $("#offer_form").serialize();
+    e.preventDefault();
+    var from=$("#off_from").val();
+    var to=$("#off_to").val();
+    var c=0;
+    if ( from== '' || from ==" ") {
 
-                                for (var i = 0; i < origins.length; i++) {
-                                    var results = response.rows[i].elements;
-                                    for (var j = 0; j < results.length; j++) {
-                                        var element = results[j];
-                                        var distance = element.distance.text;
-                                        var duration = element.duration.text;
-                                        var from = origins[i];
-                                        var to = destinations[j];
-                                        $("#details_from").text("From: " + from);
-                                        $("#details_to").text("To: " + to);
-                                        $("#distance").text("Distance: " + distance);
-                                        $("#time").text("Duration: " + duration);
-                                    }
-                                }
-                            }
-                        });
-                        directionsService.route(h, function (result, status) {
-                            if (status == 'OK') {
-                                directionsDisplay.setDirections(result);
-                            }
-                        });
-                        $("#off_errors").hide();
-                    } else {
-$("#off_errors").show();
-                        $("#off_errors").empty().append( "<h5 class = 'mdl-text mdl-color-text--red'>"+ html+"</h5>");
-                    var h=$("#ride_2").height();
-                        $("#map").css("height",h);
-                            console.log(h);
+    $("#err1").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the from field</h6>");
+}
+else{
+    $("#err1").hide();
+    
+}
+ if(to==""||to==" ")
+{
+    c++;
+    $("#err2").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the destination field</h6>");
+}
+else
+{
+    $("#err2").hide();
+    
+}
+var seats=$("#seats").val();
+if(seats==''||seats==" "||seats==="0")
+{c++;
+    $("#err3").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please enter valid number of seats</h6>");
+}
+else
+{
+$("#err3").hide();
+}
+var pickup=$("#pickup").val();
+    if(pickup==" "||pickup=="")
+    {
+        $("#err4").show().empty().append("<h6 class='mdl-text mdl-color-text--green'>To increase your chances of getting a ride,add a pickup location</h6>");
+    }
+if(c===0)
+{
 
+    $.ajax({
+        type: "POST",
+        url: "ride.php",
+        data: formdata,
+        cache: false
+    }).done(
+        function (html) {
+            if (html === "continue") {
+                $("#matrix").show();
+                $("#err4").hide();
+                var desti = $("#off_to").val();
+                var otig = $("#off_from").val();
+                marker3.setVisible(false);
+                marker4.setVisible(false);
+                marker.setVisible(false);
+                var h = {
+                    origin: desti,
+                    destination: otig,
+                    travelMode: 'DRIVING',
+                    drivingOptions: {
+                        departureTime: new Date(Date.now() + 360000),
+                        trafficModel: 'pessimistic'
+                    },
+                    unitSystem: google.maps.UnitSystem.METRIC
+                };
+                service.getDistanceMatrix({
+                    origins: [desti],
+                    destinations: [otig],
+                    travelMode: 'DRIVING',
+                    drivingOptions: {
+                        departureTime: new Date(Date.now() + 360000),
+                    }
+                }, function (response, status) {
+                    if (status == 'OK') {
+                        var origins = response.originAddresses;
+                        var destinations = response.destinationAddresses;
+
+                        for (var i = 0; i < origins.length; i++) {
+                            var results = response.rows[i].elements;
+                            for (var j = 0; j < results.length; j++) {
+                                var element = results[j];
+                                var distance = element.distance.text;
+                                var duration = element.duration.text;
+                                var from = origins[i];
+                                var to = destinations[j];
+                                $("#details_from").text("From: " + from);
+                                $("#details_to").text("To: " + to);
+                                $("#distance").text("Distance: " + distance);
+                                $("#time").text("Duration: " + duration);
+                            }
                         }
                     }
-                );
-            }); google.maps.event.addDomListener(window, 'load', initMap1);
+                });
+                directionsService.route(h, function (result, status) {
+                    if (status == 'OK') {
+                        directionsDisplay.setDirections(result);
+                    }
+                });
+                $("#off_errors").hide();
+            } else {
+                $("#off_errors").show();
+                $("#off_errors").empty().append(html);
+                var h = $("#ride_2").height();
+                $("#map").css("height", h);
+                console.log(c);
+
+            }
+
+        }
+    );}
+    else
+    {
+        console.log(c);
+        c=0;
+        $("#off_errors").hide();
+    }
+});
+google.maps.event.addDomListener(window, 'load', initMap1);

@@ -44,6 +44,7 @@ $invalidPassword = '<h2><strong>Your password should be at least 6 characters lo
 		{
 				//echo '<h2>Hello'.$row["email"].'</p>';
 				echo "redirect";
+				$_SESSION["user_id"]=$row["id"];
 				$_SESSION["email"] = $row["email"];
 				$_SESSION["firstname"] = $row["first_name"];
 				$_SESSION["lastname"] = $row["last_name"];

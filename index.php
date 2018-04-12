@@ -1,5 +1,22 @@
 <?php session_start();?>
 <?php include('common.php');?>
+<?php 
+if(isset($_SESSION["email"]))
+{$email=$_SESSION["email"];
+            $sql="select * from users where email='$email'";
+            $result=mysqli_query($con,$sql);
+            if(!$result)
+            {
+              $h="Query was not successfull";
+              echo '<p>"I am here! in not"</p>';
+            }
+            else
+            {
+              $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
+              $f=$row["first_name"];
+              $l=$row["last_name"];
+              $h='Welcome '.$f.' '.$l.'!';
+      }        }?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,6 +36,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src = "https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-blue.min.css" />
+  <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
     <link rel="stylesheet" href="src/css/app.css"/>
   <link rel="stylesheet" href="src/css/feed.css"/>
 </head>
@@ -27,14 +48,15 @@
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="nav1 mdl-layout__header" >
       <div class="  mdl-layout__header-row">
-        <span class="mdl-layout-title"><a class="mdl-navigation__link"style="font-size:20px;" href="/">Carpool</a></span>
+        <span class="mdl-layout-title"><a class="mdl-navigation__link"style="font-size:20px;" href=""><i class="material-icons"style="margin-top:-5px;">directions_car</i>Carpool</a></span>
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class=" mdl-navigation__link " style="font-size:20px;" id="home" href=""><i class="material-icons" ">home</i> Home</a>
-          <?php if(isset($_SESSION["email"])){ echo '<a class=" mdl-navigation__link " style="font-size:20px;" id="account" href="/"><i class="material-icons">settings</i> Account Settings</a>
-          <a class=" mdl-navigation__link " style="font-size:20px;" id="logout" href="logout.php">Logout</a>';}?>
-          <?php if(!isset($_SESSION["email"])){echo '<a class=" mdl-navigation__link " style="font-size:20px;" id="login_1" href="/">Login</a>
-          <a class="register mdl-navigation__link" style="font-size:20px;"  href="/" id="sign_up">Register</a>';}?>
+            <a class=" mdl-navigation__link " style="font-size:20px;" id="home" href=""><i class="material-icons" style="margin-top:-5px;">home</i>Home</a>
+            <?php if(isset($_SESSION["email"])){echo'<a class=" mdl-navigation__link " style="font-size:20px;margin:0 auto;">'.$h.'</a>';}?>
+          <?php if(isset($_SESSION["email"])){ echo '<a class=" mdl-navigation__link " style="font-size:20px;" id="account" href="/"><i class="material-icons"style="margin-top:-5px;">settings</i>Account Settings</a>
+          <a class=" mdl-navigation__link " style="font-size:20px;" id="logout" href="logout.php"><i class="material-icons" style="margin-top:-5px;">lock_open</i>Logout</a>';}?>
+          <?php if(!isset($_SESSION["email"])){echo '<a class=" mdl-navigation__link " style="font-size:20px;" id="login_1" href="/"><i class="material-icons" style="margin-top:-5px;">lock</i>Login</a>
+          <a class="register mdl-navigation__link" style="font-size:20px;"  href="/" id="sign_up">Sign Up</a>';}?>
           <a class="mdl-navigation__link" href="/help"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--blue">Help</button></a>
             <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent" id="push">
               Enable Notifications
@@ -47,8 +69,8 @@
       <nav class="mdl-navigation">
           <a class="mdl-navigation__link" id="login_2" href="/">Login</a>
         <a class="mdl-navigation__link" id="sign_up1" href="/">Register!</a>
-        <a class="mdl-navigation__link" href="/">Find a ride</a>
-          <a class="mdl-navigation__link" href="/">Offer a ride</a>
+        <a class="mdl-navigation__link" href="/">Find a Ride</a>
+          <a class="mdl-navigation__link" href="/">Offer a Ride</a>
           <a class="mdl-navigation__link" href="/help">Help</a>
         <div class="drawer-option">
           <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
@@ -89,7 +111,7 @@
       </div>
           </div>
       <div class="mdl-cell-12-col" style="display:flex;" id="redirect">
-      <div  class="mdl-card mdl-shadow--2dp" id="error">
+      <div  class="mdl-card mdl-shadow--2dp" id="error" style="display:none;">
         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                 <h2 class="mdl-card__title-text">Errors</h2>
                 </div>
@@ -144,80 +166,96 @@
               <h5 id="time" style="text-align:center;">Time:</h5>
             </div> </div>
 
-                  <div class="mdl-card mdl-shadoq--2dp" style="display:none;text-align:center;margin:0 auto" id="off_errors">
+                  <div class="mdl-card mdl-shadoq--2dp" style="display:none;text-align:center;margin:0 auto;margin-top:15px;" id="off_errors">
 
                   </div>
-       
         <div class="mdl-cell-12-col" id="ride_map">
          <div class="mdl-card mdl-shadow--6dp " id="f_ride">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Find a ride</h2> 
+              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Find a ride</h2>
             </div>
             <div class="mdl-card__supporting-text" style="height:300px;">
-              <form action="#" >
+              <form  >
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="from" placeholder="From" required/>
-                  <label class="mdl-textfield__label" for="username">From</label>
+                  <input class="mdl-textfield__input" type="text" id="from" placeholder="From"style="width:360px;"/>
+                  <label class="mdl-textfield__label" for="username"style="width:360px;">From</label>
                 </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="to" placeholder="To" required/>
-                    <label class="mdl-textfield__label" for="username">To</label>
+                    <input class="mdl-textfield__input" type="text" id="to" placeholder="To"style="width:360px;"/>
+                    <label class="mdl-textfield__label" for="username"style="width:360px;">To</label>
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
-                    <input type="text" value="" class="mdl-textfield__input" id="sample2" readonly>
-                    <input type="hidden" value="" name="sample2">
-                    <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                    <label for="sample2" class="mdl-textfield__label">When</label>
-                    <ul for="sample2" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-                        <li class="mdl-menu__item" data-val="DEU">Now</li>
-                        <li class="mdl-menu__item" data-val="BLR">Schedule for Later!</li>
-                    </ul>
-                </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username"style="width:360px;">Date Of Journey</label>
+                  <input class="mdl-textfield__input" type="text" id="find_date" name="off_date"style="width:360px;"/>
+                  </div>
               </form>
             </div>
-            <div class="mdl-card__actions ">
+            <div class="mdl-card__actions " style="text-align:center">
               <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search1">Search</button>
             </div>
       </div>
       <div class="mdl-card mdl-shadow--6dp " id="ride2">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Offer a ride</h2>
+              <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:4px;">search </i> Offer a Ride</h2>
             </div>
-            <div class="mdl-card__supporting-text">
-              <form id="offer_form" >
+            <div class="mdl-card__supporting-text" style="width:100%">
+              <form id="offer_form">
+              <div id="err1" style="display:none;"></div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" name="off_from"/>
-                  <label class="mdl-textfield__label" for="username">From</label>
+                  <input class="mdl-textfield__input" type="text" id="off_from" placeholder="From" name="off_from" style="width:360px;"/>
+                  <label class="mdl-textfield__label" for="username" style="width:360px;">From</label>
                 </div>
+
+                  <div id="err2" style="display:none;"></div>
+
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="off_to" placeholder="To" name="off_to"/>
-                    <label class="mdl-textfield__label" for="username">To</label>
+                    <input class="mdl-textfield__input" type="text" id="off_to" placeholder="To" name="off_to"style="width:360px;"/>
+                    <label class="mdl-textfield__label" for="username"style="width:360px;">To</label>
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="pickup" placeholder="Pickup" name="pickup"/>
-                    <label class="mdl-textfield__label" for="username">Pickup</label>
+
+                  <div id="err4" style="display:none;"></div>
+
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="ins">
+                    <input class="mdl-textfield__input" type="text" id="pickup" placeholder="Pickup" name="pickup"style="width:360px;"/>
+                    <label class="mdl-textfield__label" for="username"style="width:360px;">Pickup</label>
                   </div>
+
+                  <div id="err3" style="display:none;"></div>
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="number" id="seats" min="1" name="seats"/>
-                    <label class="mdl-textfield__label" for="username">No. of Seats</label>
+                    <input class="mdl-textfield__input" type="number" id="seats" min="1" name="seats"style="width:360px;"/>
+                    <label class="mdl-textfield__label" for="username" style="width:360px;">No. of Seats</label>
                   </div>
                   <div styel="display:flex;">
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username">Date Of Journey</label>
-                  <input class="mdl-textfield__input" type="text" id="off_date" name="off_date"/>
+                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username"style="width:360px;">Date Of Journey</label>
+                  <input class="mdl-textfield__input" type="text" id="off_date" name="off_date"style="width:360px;"/>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
-                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username">Time Of Journey</label>
-                  <input class="mdl-textfield__input" type="time" id="off_time"  name="off_time"/>
+                    <label style="margin-left:0px;" class="mdl-textfield__label" for="username"style="width:360px;">Time Of Journey</label>
+                  <input class="mdl-textfield__input" type="time" id="off_time"  name="off_time"style="width:360px;"/>
                   </div>
+                  <input type="hidden" id="from_lat" name="from_lat"/>
+                  <input type="hidden" id="from_lang" name="from_lang"/>
+                  <input type="hidden" id="to_lat" name="to_lat"/>
+                  <input type="hidden" id="to_lang" name="to_lang"/>
                   </div>
               </form>
             </div>
-            <div class="mdl-card__actions ">
-              <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search2">Continue!</button>
+            <div class="mdl-card__actions " style="text-align:center">
+            <?php if(isset($_SESSION["user_id"]))
+            {
+            echo'<button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search2">Continue!</button>';
+              }
+              else
+              {
+                echo'
+                <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="login3">Log In to Continue</button>';
+              }
+              ?>
             </div>
       </div>
-      <div class="mdl-card mdl-shadow--6dp" style="height:575px;"  id="map"></div>
+      <div id="map"></div>
       </div>
       <?php if(!isset($_SESSION['email'])){echo
       '<div id="first">
@@ -228,7 +266,7 @@
             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
             <path d="M0 0h24v24H0z" fill="none"/>
         </svg></button>
-        <button class="mdl-button mdl-button-js mdl-button-flat" id="previous" ><svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+        <button class="mdl-button mdl-button-js mdl-button-flat" id="previous" style="margin-left:-30px;"><svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
           <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
           <path d="M0 0h24v24H0z" fill="none"/>
       </svg></button>
@@ -248,7 +286,7 @@
       <div class="demo-card-wide mdl-cell mdl-card mdl-shadow--2dp" id="front1">
           <div class="mdl-card__title">
             <h2 class="mdl-card__title-text"><p>Rent A Car</p></h2>
-            <button class="mdl-button mdl-button-js mdl-button-flat" id="previous" ><svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+            <button class="mdl-button mdl-button-js mdl-button-flat" id="previous" style="margin-left:-30px;"><svg fill="#FFFFFF" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
               <path d="M0 0h24v24H0z" fill="none"/>
           </svg></button>
@@ -268,23 +306,8 @@
           </div>
           </div>';}
           else
-          { $email=$_SESSION["email"];
-            $sql="select * from users where email='$email'";
-            $result=mysqli_query($con,$sql);
-            if(!$result)
-            {
-              $h="Query was not successfull";
-              echo '<p>"I am here! in not"</p>';
-            }
-            else
-            {
-              $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
-              $f=$row["first_name"];
-              $l=$row["last_name"];
-              $h='Welcome '.$f.' '.$l.'!';
-              }
-
-           echo '<div style="text-align:center;"><h2 class="mdl-text mdl-color-text--teal">'.$h.'<h2></div>
+          { 
+           echo '
            <div id="hello2">
            <div class=" mdl-card mdl-shadow--2dp " id="loggedin">
            <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
@@ -298,21 +321,21 @@
                <i class="material-icons">search</i>Find a ride
              </a>
             </div>
-         </div><div class="mdl-card mdl-shadow--2dp" id="loggedin">
-         <div class="mdl-card__title">
-           <h5 class="mdl-card__title-text mdl-color-text--black"><p>Offer a Ride</p></h5>
+         </div><div class="mdl-card mdl-shadow--2dp" id="loggedin1">
+         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+           <h5 class="mdl-card__title-text "><p>Offer a Ride</p></h5>
          </div>
          <div class="mdl-card__supporting-text">
           <p>Help yourself and environment by sharing a ride,Choose from a large number of available rides,Cheaper and eco-friendly!</p>
          </div>
          <div class="mdl-card__actions mdl-card--border">
-           <a class="mdl-button mdl-button--colored mdl-js-button mdl-button-raised mdl-js-ripple-effect">
+           <a class="mdl-button mdl-button--colored mdl-js-button mdl-button-raised mdl-js-ripple-effect" id="off_ride">
                <i class="material-icons">add_circle_outline</i>Offer a ride
               </a>
          </div>
-       </div><div class="mdl-card mdl-shadow--2dp" id="loggedin">
-       <div class="mdl-card__title">
-         <h5 class="mdl-card__title-text mdl-color-text--black"><p>Find your ride summary</p></h5>
+       </div><div class="mdl-card mdl-shadow--2dp" id="loggedin2">
+       <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+         <h5 class="mdl-card__title-text"><p>Find your ride summary</p></h5>
        </div>
        <div class="mdl-card__supporting-text">
         <p>Help yourself and environment by sharing a ride,Choose from a large number of available rides,Cheaper and eco-friendly!</p>
@@ -371,7 +394,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <script src="src/js/app.js"></script>
 <script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
@@ -380,31 +402,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
  <script>
 var a=new Date(Date.now());
-console.log(a.toUTCString());
-if(a.getHours()<10)
+if(a.getHours()<10&&a.getMinutes()>=10)
 {
   a="0"+a.getHours()+":"+a.getMinutes();;
 }
-else if(a.getMinutes()<10)
+else if(a.getMinutes()<10&&a.getHours()>=10)
 {
   a=a.getHours()+":"+"0"+a.getMinutes();
 }
 else if(a.getHours()<10 && a.getMinutes()<10)
 {
   a="0"+a.getHours()+":"+"0"+a.getMinutes();
+  console.log("Here");
 }
 else
 {
   a=a.getHours()+":"+a.getMinutes();
 }
 a=a.toString();
-console.log(typeof(a));
-console.log(a.toString());
-var f;
-f=new Date(Date.now());
-console.log(f);
 $("#off_time").val(a).attr({"min":a});
 $("#off_date").datepicker({format:"dd/mm/yyyy",
+  orientation:"right top",
+  setDate: '+0d',
+   startDate:'+0d',
+  todayBtn:"linked",
+  todayHighlight:"true"}).datepicker('setDate',new Date(Date.now()));
+$("#find_date").datepicker({format:"dd/mm/yyyy",
   orientation:"right top",
   setDate: '+0d',
    startDate:'+0d',

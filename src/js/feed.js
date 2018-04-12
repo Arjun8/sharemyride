@@ -8,12 +8,14 @@ $(document).ready(
     $("#map").hide();
     $("#map1").hide();
     $("#ride2").hide();
-    $("#login_1,#login_2").click(function (e) {
+    $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
+    $("#login_1,#login_2,#login3").click(function (e) {
       $("#first").hide();
       $("#com").hide();
       $("#map").hide();
       $("#error").hide();
       $("#map1").hide();
+      $("#ride2").hide();
       $("#form1").hide();
       $('#f_ride').hide();
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
@@ -24,7 +26,7 @@ $(document).ready(
       $("#first").hide();
       $("#error").hide();
       $("#error4").hide();
-google.maps.event.addDomListener(window, 'load', initMap1);
+      $("#hello2").hide();
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#f_ride').show();
@@ -32,8 +34,8 @@ google.maps.event.addDomListener(window, 'load', initMap1);
     });
     $('#off_ride').click(function (e) {
       $("#first").hide();
-google.maps.event.addDomListener(window, 'load', initMap1);
       $("#error").hide();
+      $("#hello2").hide();
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#ride2').show();
