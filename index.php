@@ -36,10 +36,7 @@ if(isset($_SESSION["email"]))
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src = "https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-blue.min.css" />
-  <script
-  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-  crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="src/css/app.css"/>
   <link rel="stylesheet" href="src/css/feed.css"/>
 </head>
@@ -155,38 +152,42 @@ if(isset($_SESSION["email"]))
               </div>
                </div>
               </div>
-        <div class="mdl-card mdl-shadow--6dp" id="matrix">
+              <div class="mdl-cell-12-col" id="matrix2" style="display:flex;">
+        <div class="mdl-card mdl-shadow--6dp" style="height:30%;"id="matrix" >
         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons">settings </i> Distance And Time</h2>
+              <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:4px;">settings </i>Distance And Time</h2>
             </div>
-            <div class="mdl-card__supporting-text" style="height:260px;">
+            <div class="mdl-card__supporting-text"  id="p_ride">
               <h5 id="details_from" style="text-align:center;"></h5>
               <h5 id="details_to" style="text-align:center;"></h5>
               <h5 id="distance" style="text-align:center;">Distance:</h5>
               <h5 id="time" style="text-align:center;">Time:</h5>
             </div> </div>
-
-                  <div class="mdl-card mdl-shadoq--2dp" style="display:none;text-align:center;margin:0 auto;margin-top:15px;" id="off_errors">
-
+</div>
+                  <div class="mdl-card mdl-shadow--2dp" style="display:none;text-align:center;margin:0 auto;margin-top:15px;" id="off_errors">
                   </div>
         <div class="mdl-cell-12-col" id="ride_map">
          <div class="mdl-card mdl-shadow--6dp " id="f_ride">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons">search </i> Find a ride</h2>
+              <h2 class="mdl-card__title-text"><i class="material-icons"style="margin-top:3px;">search</i> Find a Ride</h2>
             </div>
             <div class="mdl-card__supporting-text" style="height:300px;">
-              <form  >
+              <form  id="find_form">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="from" placeholder="From"style="width:360px;"/>
+                  <input class="mdl-textfield__input" type="text" id="from" name="find_from" placeholder="From"style="width:360px;"/>
                   <label class="mdl-textfield__label" for="username"style="width:360px;">From</label>
                 </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="to" placeholder="To"style="width:360px;"/>
+                    <input class="mdl-textfield__input" type="text" id="to" name="to" placeholder="To"style="width:360px;"/>
                     <label class="mdl-textfield__label" for="username"style="width:360px;">To</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input type="hidden" id="find_from_lat" name="find_from_lat"/>
+                  <input type="hidden" id="find_from_lang" name="find_from_lang"/>
+                  <input type="hidden" id="find_to_lat" name="find_to_lat"/>
+                  <input type="hidden" id="find_to_lang" name="find_to_lang"/>
                     <label style="margin-left:0px;" class="mdl-textfield__label" for="username"style="width:360px;">Date Of Journey</label>
-                  <input class="mdl-textfield__input" type="text" id="find_date" name="off_date"style="width:360px;"/>
+                  <input class="mdl-textfield__input" type="text" id="find_date" name="find_date"style="width:360px;"/>
                   </div>
               </form>
             </div>
@@ -196,7 +197,7 @@ if(isset($_SESSION["email"]))
       </div>
       <div class="mdl-card mdl-shadow--6dp " id="ride2">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-              <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:4px;">search </i> Offer a Ride</h2>
+              <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:3px;">add_circle_outline</i> Offer a Ride</h2>
             </div>
             <div class="mdl-card__supporting-text" style="width:100%">
               <form id="offer_form">
@@ -394,6 +395,10 @@ if(isset($_SESSION["email"]))
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
 <script src="src/js/app.js"></script>
 <script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
@@ -433,6 +438,34 @@ $("#find_date").datepicker({format:"dd/mm/yyyy",
    startDate:'+0d',
   todayBtn:"linked",
   todayHighlight:"true"}).datepicker('setDate',new Date(Date.now()));
+            $("#from" ).autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url: "hint.php",
+                        dataType: "json",
+                        data: {
+                            q: request.term
+                        },
+                        success: function( data ) {
+                            response( data );
+                        }
+                    });
+                },
+            });
+            $("#to" ).autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url: "to_hint.php",
+                        dataType: "json",
+                        data: {
+                            q: request.term
+                        },
+                        success: function( data ) {
+                            response( data );
+                        }
+                    });
+                },
+            });
 </script>
  </body>
 </html>

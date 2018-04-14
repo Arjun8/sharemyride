@@ -13,6 +13,7 @@ $(document).ready(
       $("#first").hide();
       $("#com").hide();
       $("#map").hide();
+      $("matrix").hide();
       $("#error").hide();
       $("#map1").hide();
       $("#ride2").hide();

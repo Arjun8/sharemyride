@@ -12,6 +12,12 @@
   color: white;
   opacity: 1; /* Firefox */
 }
+.ui-autocomplete {
+  z-index: 99999999999 !important;
+  }
+  .pac-container {
+    z-index: 99999999999 !important;
+}
 #loggedin,#loggedin1,#loggedin2
 {
   width:30%;
@@ -31,8 +37,8 @@
 #matrix
 {
   display: none;
-  width: 80%;
-  margin-left:130px;
+  width: 30%;
+  margin-left:25px;
   margin-top:25px;
 }
 #front,#front1{
@@ -94,6 +100,8 @@
 #ride_map
 {
   display: flex;
+  height: 100%;
+  width: 100%;
 }
 #f_ride,#ride2
 {

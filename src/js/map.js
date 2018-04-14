@@ -1,30 +1,17 @@
 var map, infoWindow1, autocomplete2, autocomplete1, autocomplete3, autocomplete4, autocomplete5, marker, marker2, marker5, marker1, marker3, marker4, directionsService, directionsDisplay, service;
 
-function fillinAddress2() {
-    var place = autocomplete2.getPlace();
-    marker2.setPosition(place.geometry.location);
-}
-
 function fillinAddress4() {
     var place = autocomplete4.getPlace();
     marker4.setPosition(place.geometry.location);
     $("#to_lat").val(place.geometry.location.lat());
     $("#to_lang").val(place.geometry.location.lng());
-    console.log(place.geometry.location.lat());
+    
 }
 
 function fillinAddress5() {
     var place = autocomplete5.getPlace();
     marker5.setPosition(place.geometry.location);
 }
-
-function fillinAddress1() {
-    infoWindow1.close();
-    marker.setVisible(false);
-    var place = autocomplete1.getPlace();
-    marker1.setPosition(place.geometry.location);
-}
-
 function fillinAddress3() {
     infoWindow1.close();
     marker.setVisible(false);
@@ -52,13 +39,23 @@ function initMap1() {
     var b = "";
     var d = " ";
     var adress;
-    marker2 = new google.maps.Marker({
+    var input3 = document.getElementById("off_from");
+    var input4 = document.getElementById('off_to');
+    var input5 = document.getElementById('pickup');
+    var geocoder = new google.maps.Geocoder();
+    var geocoder1 = new google.maps.Geocoder();
+    $("#to").change(function(){
+        var id="to";
+        geocodeAddress(geocoder, map,id);
+    });
+    $("#from").change(function(){
+        var id="from";
+        geocodeAddress(geocoder, map,id);
+    });
+    marker3 = new google.maps.Marker({
         map: map,
     });
     marker1 = new google.maps.Marker({
-        map: map,
-    });
-    marker3 = new google.maps.Marker({
         map: map,
     });
     marker4 = new google.maps.Marker({
@@ -67,31 +64,22 @@ function initMap1() {
     marker5 = new google.maps.Marker({
         map: map,
     });
-    marker3 = new google.maps.Marker({
+    marker = new google.maps.Marker({
         map: map
     });
-    marker4 = new google.maps.Marker({
-        map: map
-    });
-    var input1 = document.getElementById("from");
-    var input2 = document.getElementById('to');
-    var input3 = document.getElementById("off_from");
-    var input4 = document.getElementById('off_to');
-    var input5 = document.getElementById('pickup');
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            marker = new google.maps.Marker({
-                map: map,
-                position: pos
-            });
+       marker.setPosition(pos);
             a = (position.coords.latitude);
             b = (position.coords.longitude);
-            $("#from_lat").val(a);
-    $("#from_lang").val(b);
+       $("#find_from_lat").val(a);
+       $("#find_from_lang").val(b);
+        $("#from_lat").val(a);
+        $("#from_lang").val(b);
             d = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + a + "," + b + "&key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk";
             $.getJSON(d, function (data) {
                 adress = data.results[0].formatted_address;
@@ -104,13 +92,6 @@ function initMap1() {
             var defaultBounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(31.280674, 75.687843),
                 new google.maps.LatLng(30.978235, 75.584792));
-            autocomplete1 = new google.maps.places.Autocomplete(input1, {
-                types: ['geocode'],
-                bounds: defaultBounds,
-            });
-            autocomplete2 = new google.maps.places.Autocomplete(input2, {
-                types: ['geocode']
-            });
             autocomplete3 = new google.maps.places.Autocomplete(input3, {
                 types: ['geocode']
             });
@@ -120,17 +101,6 @@ function initMap1() {
             autocomplete5 = new google.maps.places.Autocomplete(input5, {
                 types: ['geocode']
             });
-            autocomplete1.setTypes(['(cities)']);
-            autocomplete1.setComponentRestrictions({
-                'country': 'in'
-            });
-            autocomplete1.setBounds
-            autocomplete1.addListener('place_changed', fillinAddress1);
-            autocomplete2.setTypes(['(cities)']);
-            autocomplete2.setComponentRestrictions({
-                'country': 'in'
-            });
-            autocomplete2.addListener('place_changed', fillinAddress2);
             autocomplete3.setTypes(['(cities)']);
             autocomplete3.setComponentRestrictions({
                 'country': 'in'
@@ -146,8 +116,6 @@ function initMap1() {
                 'country': 'in'
             });
             autocomplete5.addListener('place_changed', fillinAddress5);
-            autocomplete1.setBounds(circle.getBounds());
-            autocomplete2.setBounds(circle.getBounds());
             autocomplete3.setBounds(circle.getBounds());
             autocomplete4.setBounds(circle.getBounds());
             autocomplete5.setBounds(circle.getBounds());
@@ -159,6 +127,9 @@ function initMap1() {
         });
         $("#from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
+        });
+        $("#from").change(function(){
+            $(this).val();
         });
         $("#off_from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
@@ -176,16 +147,27 @@ function handleLocationError(browserHasGeolocation, infoWindow1, pos) {
         'Error: Your browser doesn\'t support geolocation.');
     infoWindow1.open(map);
 }
-$("#search1").click(function () {
+$("#search1").click(function (e) {
     $("#matrix").show();
-    var desti = $("#to").val();
-    var otig = $("#from").val();
-    marker1.setVisible(false);
-    marker2.setVisible(false);
+    $("#f_ride").hide();
+    $("#ride_map").show();
+    var formdata = $("#find_form").serialize();
+    e.preventDefault();
+    var destination = $("#to").val();
+    var source = $("#from").val();
     marker.setVisible(false);
+    marker1.setVisible(false);
+    $.ajax({
+        type: "POST",
+        url: "search.php",
+        data: formdata,
+        cache: false
+    }).done(
+        function (html) {$("#matrix2").prepend(html);
+        });
     var h = {
-        origin: desti,
-        destination: otig,
+        origin: source,
+        destination: destination,
         travelMode: 'DRIVING',
         drivingOptions: {
             departureTime: new Date(Date.now() + 360000),
@@ -194,8 +176,8 @@ $("#search1").click(function () {
         unitSystem: google.maps.UnitSystem.METRIC
     };
     service.getDistanceMatrix({
-        origins: [desti],
-        destinations: [otig],
+        origins: [source],
+        destinations: [destination],
         travelMode: 'DRIVING',
         drivingOptions: {
             departureTime: new Date(Date.now() + 360000),
@@ -213,9 +195,10 @@ $("#search1").click(function () {
                     var duration = element.duration.text;
                     var from = origins[i];
                     var to = destinations[j];
-                    $("#details").text("Distance and time required between " + from + " and " + to + ".");
-                    $("#distance").text("Distance: " + distance);
-                    $("#time").text("Duration: " + duration);
+                    $("#details_from").empty().text("From: " + source);
+                    $("#details_to").empty().text("To: " + to);
+                    $("#distance").empty().text("Distance: " + distance);
+                    $("#time").empty().text("Duration: " + duration);
                 }
             }
         }
@@ -238,7 +221,6 @@ $("#search2").click(function (e) {
 }
 else{
     $("#err1").hide();
-    
 }
  if(to==""||to==" ")
 {
@@ -312,10 +294,12 @@ if(c===0)
                                 var duration = element.duration.text;
                                 var from = origins[i];
                                 var to = destinations[j];
-                                $("#details_from").text("From: " + from);
-                                $("#details_to").text("To: " + to);
-                                $("#distance").text("Distance: " + distance);
-                                $("#time").text("Duration: " + duration);
+                                $("#matrix").css({"width":"80%","margin-left":"80px"});
+                                $("#p_ride").prepend("<h2 class='mdl-text mdl-color-text--primary' style='text-align:center;'>Congrats,You published A Ride!<h2>");
+                                $("#details_from").empty().text("From: " + from);
+                                $("#details_to").empty().text("To: " + to);
+                                $("#distance").empty().text("Distance: " + distance);
+                                $("#time").empty().text("Duration: " + duration);
                             }
                         }
                     }
@@ -331,17 +315,37 @@ if(c===0)
                 $("#off_errors").empty().append(html);
                 var h = $("#ride_2").height();
                 $("#map").css("height", h);
-                console.log(c);
-
             }
 
         }
     );}
     else
     {
-        console.log(c);
         c=0;
         $("#off_errors").hide();
     }
 });
+function geocodeAddress(geocoder, resultsMap,id) {
+    var address = document.getElementById(id).value;
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        if(id==="from")
+        {
+        infoWindow1.close();
+        var a=results[0].geometry.location;
+        marker.setPosition(results[0].geometry.location);
+        $("#find_from_lat").val(a.lat());
+        $("#find_from_lang").val(a.lng());
+        }
+        else if(id==="to")
+        {
+            var a=results[0].geometry.location;
+            marker1.setPosition(a);
+            $("#find_to_lat").val(a.lat());
+            $("#find_to_lang").val(a.lng());
+
+        }
+      }
+    });
+  }
 google.maps.event.addDomListener(window, 'load', initMap1);
