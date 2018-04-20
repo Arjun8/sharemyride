@@ -1,42 +1,68 @@
 $(document).ready(
   function () {
-    var currentTime = new Date();
-    var month = currentTime.getMonth() + 1;
-    var day = currentTime.getDate();
-    var year = currentTime.getFullYear();
-    $("#date").val(day, month, year)
-    $("#map").hide();
-    $("#map1").hide();
-    $("#ride2").hide();
-    $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
-    $("#login_1,#login_2,#login3").click(function (e) {
-      $("#first").hide();
-      $("#com").hide();
-      $("#map").hide();
-      $("matrix").hide();
-      $("#error").hide();
-      $("#map1").hide();
-      $("#ride2").hide();
-      $("#form1").hide();
-      $('#f_ride').hide();
+    $("#map").css("display","none");
+    $("#map1").css("display","none");
+    $("#ride2").css("display","none");
+    $("#account").click(function(e){
+      $("#first").css("display","none");
+      $("#com").css("display","none");
+      $("#map").css("display","none");
+      $("matrix").css("display","none");
+      $("#error").css("display","none");
+      $("#map1").css("display","none");
+      $("#grid1").css("display","none");
+      $("#grid2").css("display","none");
+      $("#ride2").css("display","none");
+      $("#form1").css("display","none");
+      $('#f_ride').css("display","none");
+      $('#matrix2').css("display","none");
+      $("#settings").show();
+      e.preventDefault();
+    });
+    $("#upload").click(function(){
+      $("#upload_form").show();
+      $("#updatepicturemessage").empty();
+    });
+    $("#close1").click(function(e){
+      $("#upload_form").css("display","none");
+      e.preventDefault();
+     });
+        $("#login_1,#login_2,#login3").click(function (e) {
+      $("#first").css("display","none");
+      $("#com").css("display","none");
+      $("#map").css("display","none");
+      $("matrix").css("display","none");
+      $("#error").css("display","none");
+      $("#map1").css("display","none");
+      $("#ride2").css("display","none");
+      $("#form1").css("display","none");
+      $('#f_ride').css("display","none");
+      $('#matrix2').css("display","none");
+      $("#settings").css("display","none");
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $("#logon").show();
       e.preventDefault();
     });
     $('#ride').click(function () {
-      $("#first").hide();
-      $("#error").hide();
-      $("#error4").hide();
-      $("#hello2").hide();
+      $("#first").css("display","none");
+      $("#error").css("display","none");
+      $("#error4").css("display","none");
+      $("#grid1").css("display","none");
+      $("#grid2").css("display","none");
+      $("#hello2").css("display","none");
+      $("#settings").css("display","none");
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#f_ride').show();
       $("#map").show();
     });
     $('#off_ride').click(function (e) {
-      $("#first").hide();
-      $("#error").hide();
-      $("#hello2").hide();
+      $("#first").css("display","none");
+      $("#grid1").css("display","none");
+      $("#grid2").css("display","none");
+      $("#settings").css("display","none");
+      $("#error").css("display","none");
+      $("#hello2").css("display","none");
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $('#com').show();
       $('#ride2').show();
@@ -44,10 +70,11 @@ $(document).ready(
       e.preventDefault();
     });
     $("#sign_up ,#sign_up1").click(function (e) {
-      $("#first").hide();
-      $("#com").hide();
-      $('#f_ride').hide();
-      $("#logon,#error4").hide();
+      $("#first").css("display","none");
+      $("#com").css("display","none");
+      $('#f_ride').css("display","none");
+      $("#settings").css("display","none");
+      $("#logon,#error4").css("display","none");
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
       $("#form1").show();
       e.preventDefault();
@@ -55,7 +82,7 @@ $(document).ready(
     $('#front .mdl-card__title,#front1 .mdl-card__title').css("background", "url(src/images/pexels_photo.jpg) center / cover");
     var h = ["pexels_photo.jpg", "pexels_photo_207171.jpg", "pexels_photo_386009.jpg", "pexels_photo_894359.jpg", "california-road-highway-mountains-63324.jpeg"];
     var f = ["Share a ride", "Cheaper and Easy", "Less Time consuming", "Grow Socially"];
-    var m = ["  Help yourself and environment by sharing a ride", "Choose from a large number of available rides", "Cheaper and eco-friendly!", "Carpooling can provide you with new friendships and company for your commute."];
+    var m = ["Help yourself and environment by sharing a ride", "Choose from a large number of available rides", "Cheaper and eco-friendly!", "Carpooling can provide you with new friendships and company for your commute."];
     var k = 0;
 
     function setImage() {

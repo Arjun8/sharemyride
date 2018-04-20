@@ -20,16 +20,11 @@
 }
 #loggedin,#loggedin1,#loggedin2
 {
-  width:30%;
+  width:100%;
   margin-top:25px;
-  margin-left:30px;
 }
 .mdl-navigation> a > i{
   vertical-align:middle;
-}
-#hello2
-{
-  display: flex;
 }
 .drawer-option {
   padding: 16px;
