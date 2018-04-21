@@ -56,6 +56,10 @@ if(empty($_POST["phonenumber"])){
 }else{
     $phonenumber = filter_var($_POST["phonenumber"], FILTER_SANITIZE_STRING);
 }
+if(empty($_POST["gender"]))
+{
+    $errors=$errors."Please select your gender";
+}
 if($errors){
     $resultMessage = $errors;
     echo $resultMessage;
@@ -66,7 +70,8 @@ else
 	$lastname = mysqli_real_escape_string($con,$_POST['lastname']);
 	$email = mysqli_real_escape_string($con,$_POST['email']);
 	$password = mysqli_real_escape_string($con,$_POST['password']);
-	$password = hash('sha256', $password);
+    $password = hash('sha256', $password);
+    $gender=mysqli_real_escape_string($con,$_POST["gender"]);
 	$phonenumber=mysqli_real_escape_string($con,$_POST['phonenumber']);
 	$sql = "Select * from users where email = '$email'";
 	$result = mysqli_query($con,$sql);
@@ -78,7 +83,7 @@ else
 	if($results){
 		echo '<h3>That email is already registered. Do you want to log in?</h3><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--primary" id="login_3">Login</button>';  exit;
 	}
-	$sql = "INSERT INTO users (`email`, `password`,  `first_name`, `last_name`, `phonenumber`) VALUES ('$email', '$password', '$firstname', '$lastname', '$phonenumber')";
+	$sql = "INSERT INTO users (`email`, `password`,  `first_name`, `last_name`, `phonenumber`,`gender`) VALUES ('$email', '$password', '$firstname', '$lastname', '$phonenumber','$gender')";
 	$result = mysqli_query($con, $sql);
 	if(!$result){
 		echo '<p>There was an error inserting the users details in the database!</p>';

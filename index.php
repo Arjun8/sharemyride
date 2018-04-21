@@ -49,7 +49,7 @@ if(isset($_SESSION["user_id"]))
     <i class="material-icons">close</i></a>
     <div id="updatepicturemessage"></div>
     <form method="post" enctype="multipart/form-data" id="updatepictureform">
-    <img src="" id="previewing" style="width:120px;height:120px;">
+    <img  id="previewing" style="width:120px;height:120px;">
     <h3>Select a Picture:</h4><input type="file" name="picture" id="picture" style="width:80%;"/>
     </br>
     <input class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" name="updatepicture" type="submit" value="Submit">
@@ -203,6 +203,21 @@ if(isset($_SESSION["user_id"]))
                     <input class="mdl-textfield__input" type="text" id="lastname" name="lastname" value="" />
                     <label class="mdl-textfield__label" for="username">Last Name</label>
                   </div>
+                  <div class="">
+                  <label class="mdl-radio" style="margin-left:-10px;">Gender:</label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Male">
+                  <input type="radio" id="Male" value="Male" class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Male</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Female">
+                  <input type="radio" id="Female" value="Female" class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Female</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="other">
+                  <input type="radio" id="other" value="other" class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Other</span>
+                  </label>
+                  </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="Email" id="email" name="email" />
                     <label class="mdl-textfield__label" for="userpass">Email</label>
@@ -219,7 +234,7 @@ if(isset($_SESSION["user_id"]))
                       <label class="mdl-textfield__label" for="username">Mobile No.</label>
                       <input class="mdl-textfield__input " type="text" id="phonemumber" name="phonenumber" value=""/>
                                          </div>
-                                        <div class="mdl-card__actions mdl-card--border">
+                                        <div class="mdl-card__actions ">
                 <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="cone" name="sign_up" value="Sign up">
                </div>
                 </form>
@@ -603,6 +618,7 @@ $("#find_date").datepicker({format:"dd/mm/yyyy",
                     });
                 },
             });
+            //console.log(document.getElementById('Male').parentNode.MaterialRadio.check());
 </script>
  </body>
 </html>

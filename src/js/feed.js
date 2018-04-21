@@ -1,5 +1,6 @@
 $(document).ready(
   function () {
+    $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");
     $("#map").css("display","none");
     $("#map1").css("display","none");
     $("#ride2").css("display","none");
