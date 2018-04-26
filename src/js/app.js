@@ -1,6 +1,55 @@
 $(document).ready(function () {
     $("#error").hide();
     $("#error4").hide();
+    var c=0;
+    $("#update1").click(function(e){
+        e.preventDefault();
+       if($("#firstname1").val()===""||$("#firstname1").val()===" ")
+        {
+            $("#d1").show()
+            $("#d").text("First Name can not be empty");
+            return false;
+        }
+        else
+        {
+            $("#d1").css('display','none');
+        }
+        if($("#lastname1").val()===""||$("#lastname1").val()===" ")
+        {
+            $("#f1").show();$("#f").text("Last name can not be empty");
+            return false;
+        }
+        else
+        {
+            $("#f1").css('display','none');
+             }
+        if(!$("#Male1").prop('checked')&&!$("#Female1").prop('checked')&&!$("#other1").prop('checked'))
+        {
+            $("#g1").show();$("#g").text("Please Select your gender");
+            return false;
+        }
+        else
+        {
+             $("#g1").css('display','none');
+        var formData = $("#update2").serialize();
+        $.ajax({
+            type: "POST",
+            url: "update.php",
+            data: formData,
+            cache: false,
+        }).done(function (html) {
+            if(html==="redirect")
+            { location.reload();
+            
+                $("#msg").text("Your changes were successfull");
+                $("#message_board").show().slideDown();
+               }
+            else
+            {
+                $("#message_board").show().slideDown().text(html);
+            }
+    });
+}});
     $("#log_in").click(function(e){
         e.preventDefault();
         $("#error4").show();
@@ -14,6 +63,8 @@ $(document).ready(function () {
         }).done(function (html) {
             if(html==='redirect')
             {
+                $("#error").hide();
+                $("#error4").hide();
                 window.location.href="index.php";
             }
             else

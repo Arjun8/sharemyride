@@ -4,7 +4,7 @@ $(document).ready(
     $("#map").css("display","none");
     $("#map1").css("display","none");
     $("#ride2").css("display","none");
-    $("#account").click(function(e){
+    $("#account,#setting1").click(function(e){
       $("#first").css("display","none");
       $("#com").css("display","none");
       $("#map").css("display","none");
@@ -15,11 +15,18 @@ $(document).ready(
       $("#grid2").css("display","none");
       $("#ride2").css("display","none");
       $("#form1").css("display","none");
+      $("#no_j").css("display","none");
       $('#f_ride').css("display","none");
       $('#matrix2').css("display","none");
       $("#settings").show();
       e.preventDefault();
     });
+    $("#book").click(
+      function(){
+        var formdata;
+      }
+    );
+
     $("#upload").click(function(){
       $("#upload_form").show();
       $("#updatepicturemessage").empty();
@@ -35,6 +42,7 @@ $(document).ready(
       $("matrix").css("display","none");
       $("#error").css("display","none");
       $("#map1").css("display","none");
+      $("#no_j").css("display","none");
       $("#ride2").css("display","none");
       $("#form1").css("display","none");
       $('#f_ride').css("display","none");
@@ -44,10 +52,11 @@ $(document).ready(
       $("#logon").show();
       e.preventDefault();
     });
-    $('#ride').click(function () {
+    $('#ride,#d_fride').click(function (e) {
       $("#first").css("display","none");
       $("#error").css("display","none");
       $("#error4").css("display","none");
+      $("#no_j").css("display","none");
       $("#grid1").css("display","none");
       $("#grid2").css("display","none");
       $("#hello2").css("display","none");
@@ -56,11 +65,13 @@ $(document).ready(
       $('#com').show();
       $('#f_ride').show();
       $("#map").show();
+      e.preventDefault();
     });
-    $('#off_ride').click(function (e) {
+    $('#off_ride,#d_offride').click(function (e) {
       $("#first").css("display","none");
       $("#grid1").css("display","none");
       $("#grid2").css("display","none");
+      $("#no_j").css("display","none");
       $("#settings").css("display","none");
       $("#error").css("display","none");
       $("#hello2").css("display","none");
@@ -74,6 +85,7 @@ $(document).ready(
       $("#first").css("display","none");
       $("#com").css("display","none");
       $('#f_ride').css("display","none");
+      $("#no_j").css("display","none");
       $("#settings").css("display","none");
       $("#logon,#error4").css("display","none");
       $(".grid").css("background", "url(src/images/woodland-road-falling-leaf-natural-38537.jpeg)");

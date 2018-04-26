@@ -26,7 +26,7 @@ if(empty($_POST["gender"]))
 {
     $errors=$errors."<p><strong>Please select your gender</strong></p>";
 }
-if(empty($_POST["email"])){
+/*if(empty($_POST["email"])){
     $errors .= $missingEmail;
 }else{
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
@@ -55,11 +55,11 @@ if(empty($_POST["password"])){
 }
 if(empty($_POST["phonenumber"])){
     $errors .= $missingPhone;
-}elseif(preg_match('/\D/',$_POST["phonenumber"]) || strlen($_POST["phonenumber"])<10||strlen($_POST["phonenumber"])>10){
+}elseif(preg_match('/\D/',$_POST["phonenumber"]) || strlen($_POST["phonenumber"])<0||strlen($_POST["phonenumber"])>0){
     $errors .= $invalidPhoneNumber;
 }else{
     $phonenumber = filter_var($_POST["phonenumber"], FILTER_SANITIZE_STRING);
-}
+}*/
 
 if($errors){
     $resultMessage = $errors;
@@ -67,24 +67,11 @@ if($errors){
 }
 else
 {
+    $id=$_SESSION["user_id"];
 	$firstname = mysqli_real_escape_string($con,$_POST['firstname']);
 	$lastname = mysqli_real_escape_string($con,$_POST['lastname']);
-	$email = mysqli_real_escape_string($con,$_POST['email']);
-	$password = mysqli_real_escape_string($con,$_POST['password']);
-    $password = hash('sha256', $password);
     $gender=mysqli_real_escape_string($con,$_POST["gender"]);
-	$phonenumber=mysqli_real_escape_string($con,$_POST['phonenumber']);
-	$sql = "Select * from users where email = '$email'";
-	$result = mysqli_query($con,$sql);
-	if(!$result){
-		echo '<p>Error running the query!</p>';
-		exit;
-	}
-	$results = mysqli_num_rows($result);
-	if($results){
-		echo '<h3>That email is already registered. Do you want to log in?</h3><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--primary" id="login_3">Login</button>';  exit;
-	}
-	$sql = "INSERT INTO users (`email`, `password`,  `first_name`, `last_name`, `phonenumber`,`gender`) VALUES ('$email', '$password', '$firstname', '$lastname', '$phonenumber','$gender')";
+	$sql = "UPDATE users set `first_name`='$firstname', `last_name`='$lastname', `gender`= '$gender' where id='$id'";
 	$result = mysqli_query($con, $sql);
 	if(!$result){
 		echo '<p>There was an error inserting the users details in the database!</p>';
@@ -93,7 +80,6 @@ else
 	else
 	{
         echo "redirect";
-		//header("location: login1.php");
 	}
 }
 ?>

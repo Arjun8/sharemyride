@@ -16,8 +16,12 @@ if(isset($_SESSION["user_id"]))
               $f=$row["first_name"];
               $l=$row["last_name"];
               $p=$row["profilepicture"];
+              $email1=$row["email"];
+              $mo=$row["phonenumber"];
+              $g="#".$row["gender"]."1";
               $h='Welcome '.$f.' '.$l.'!';
-      }        }?>
+      }
+        }?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -56,7 +60,7 @@ if(isset($_SESSION["user_id"]))
                 <button type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect"data-dismiss="modal">
                   Cancel
     </button>
-    </from>
+    </form>
       </div></div>
     </div>
 <div id="app" style="z-index:1;">
@@ -81,7 +85,7 @@ if(isset($_SESSION["user_id"]))
           <?php if(!isset($_SESSION["email"])){echo '<a class=" mdl-navigation__link " style="font-size:20px;" id="login_1" href="/"><i class="material-icons" style="margin-top:-5px;">lock</i>Login</a>
           <a class="register mdl-navigation__link" style="font-size:20px;"  href="/" id="sign_up">Sign Up</a>';}?>
             <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent" id="push">
-              Enable Notifications
+            <i class="fa fa-bell-o"></i> Enable Notifications
             </button>
              </nav>
       </div>
@@ -89,19 +93,29 @@ if(isset($_SESSION["user_id"]))
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">ShareMyRide</span>
       <nav class="mdl-navigation">
+        <?php if(isset($_SESSION["user_id"]))
+        {
+          echo '<a class="mdl-navigation__link"  href="">'.$f." ".$l.'</a>
+        <a class="mdl-navigation__link" id="setting1" href="">Account Settings</a>
+        <a class=" mdl-navigation__link "id="logout1" href="logout.php"><i class="material-icons" style="margin-top:-5px;">lock_open</i>Logout</a>';
+        }else
+        {
+          echo'
           <a class="mdl-navigation__link" id="login_2" href="/">Login</a>
-        <a class="mdl-navigation__link" id="sign_up1" href="/">Register!</a>
-        <a class="mdl-navigation__link" href="/">Find a Ride</a>
-          <a class="mdl-navigation__link" href="/">Offer a Ride</a>
-          <a class="mdl-navigation__link" href="/help">Help</a>
+        <a class="mdl-navigation__link" id="sign_up1" href="/">Sign Up!</a>';}
+        ?>
+        <a class="mdl-navigation__link" href="" id="d_fride">Find a Ride</a>
+          <a class="mdl-navigation__link" href="" id="d_offride">Offer a Ride</a>
+          <a class="mdl-navigation__link" href="">Help</a>
         <div class="drawer-option">
           <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
-            Enable Notifications
+          <i class="fa fa-bell-o"></i> Enable Notifications
           </button>
         </div>
       </nav>
     </div>
     <div class="grid">
+    <div id="message_board" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp" style="display:none;"><h2 id="msg"class="mdl-text mdl-color-text--primary">Hello where</h2> </div>
     <div class="mdl-grid" id="settings" style="display:none;margin-left: 75px;margin-top:25px;">
     <div class="mdl-cell mdl-cell--2-col" >
     <?php
@@ -121,37 +135,48 @@ if(isset($_SESSION["user_id"]))
     }
     ?>
     </div>
-    <div class="mdl-cell mdl-cell--8-col" style="margin-left:65px;">
-    <h3 class="mdl-text mdl-color-text--primary">Personal Information</h3>
-    <form  id="sign_form1">
-                  <div class="mdl-textfield mdl-js-textfield ">
-                  <label class="mdl-text" for="username">First Name</label>
-                  </br></br>
-                    <input class="mdl-text" type="text" id="firstname1" name="firstname" value="  <?php echo $f;?>" style="width:360px;height:30px;"/>
-                   </div>
-                   </br>
-                  <div class="mdl-textfield mdl-js-textfield ">
-                  <label class="" for="username">Last Name</label>
-                  </br></br>
-                    <input class="" type="text" id="lastname1" name="lastname" value="  <?php echo $l;?>" style="width:360px;height:30px;"/>
+    <div class="mdl-cell mdl-cell--8-col " style="margin-left:65px;">
+      <div class="mdl-card mdl-shadow--2dp" style="width:80%;">
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+      <h3 class="mdl-card__title-text">Personal Information</h3>
+  </div>
+  <div class="mdl-card__supporting-text">
+      <form  id="update2">
+      <div id="d1" style="display:none;margin-left:180px;"><h6 id="d" class="mdl-color-text--red"></h6></div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left:170px" >
+                  <input class="mdl-textfield__input" type="text" id="firstname1" name="firstname" value="<?php echo $f;?>"/>
+                  <label class="mdl-textfield__label" for="username">First Name</label>
                   </div>
-                  </br>
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="Email" id="email123" name="email" />
-                    <label class="mdl-textfield__label" for="userpass">Email</label>
+                   <div id="f1"style="display:none;margin-left:180px;"><h6 id="f" class="mdl-color-text--red"></h6></div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-left:170px">
+                  <label class="mdl-textfield__label" for="username">Last Name</label>
+                  <input class="mdl-textfield__input" type="text" id="lastname1" name="lastname" value="<?php echo $l;?>"/>
                   </div>
-                    </br>
-                    <div class="mdl-textfield mdl-js-textfield ">
-                      <label class="mdl-textfield__label" for="username">Mobile No.</label>
-                      <input class="mdl-textfield__input " type="text" id="phonemumber1" name="phonenumber" value=""/>
-                                         </div>
-                                        <div class="mdl-card__actions ">
-                <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="cone1" name="sign_up" value="Submit">
+                  <div  id="g1"style="display:none;margin-left:180px;"><h6 id="g" class="mdl-color-text--red"></h6></div>
+                  <div class="" style="margin-left:180px;">
+                  <label class="mdl-radio mdl-color-text--primary" style="margin-left:-10px;">Gender:</label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Male1">
+                  <input type="radio" id="Male1" value="Male"class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Male</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Female1">
+                  <input type="radio" id="Female1" value="Female"class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Female</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="other1">
+                  <input type="radio" id="other1" value="other"class="mdl-radio__button" name="gender" />
+                  <span class="mdl-radio__label">Other</span>
+                                    </label>
+                  </div>
+                  <div style="text-align:center;margin-top:10px;">
+                  <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="update1" name="update1" value="Save Changes">
                </div>
-                </form>
+      </form>
+  </div>
+      </div>
     </div>
     </div>
-    <div class="mdl-cell-12-col"  id="redirect1">
+    <div class="mdl-cell--12-col"  id="redirect1">
       <div  class="mdl-card mdl-shadow--2dp" id="error4" style="display:none;margin:0 auto;margin-top:10px;width:80%;">
       <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                 <h2 class="mdl-card__title-text">Errors</h2>
@@ -181,15 +206,15 @@ if(isset($_SESSION["user_id"]))
               </div>
       </div>
           </div>
-      <div class="mdl-cell-12-col" style="display:flex;" id="redirect">
-      <div  class="mdl-card mdl-shadow--2dp" id="error" style="display:none;">
+      <div class="mdl-grid" id="redirect">
+      <div  class="mdl-cell mdl-cell--5-col mdl-card mdl-shadow--2dp" id="error" style="display:none;">
         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                 <h2 class="mdl-card__title-text">Errors</h2>
                 </div>
                 <div class="mdl-card__supporting-text" id="error1">
               </div>
           </div>
-            <div class="mdl-card mdl-shadow--2dp " id="form1">
+            <div class="mdl-cell mdl-cell--5-col mdl-card mdl-shadow--2dp " id="form1">
               <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                 <h2 class="mdl-card__title-text">Sign Up</h2>
               </div>
@@ -197,14 +222,14 @@ if(isset($_SESSION["user_id"]))
                 <form  id="sign_form">
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="firstname" name="firstname" value="" />
-                    <label class="mdl-textfield__label" for="username">First Name</label>
+                    <label class="mdl-textfield__label" for="username" pattern="^[A-Za-z]+">First Name</label>
                    </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="lastname" name="lastname" value="" />
-                    <label class="mdl-textfield__label" for="username">Last Name</label>
+                    <label class="mdl-textfield__label" for="username" pattern="[A-Za-z]">Last Name</label>
                   </div>
                   <div class="">
-                  <label class="mdl-radio" style="margin-left:-10px;">Gender:</label>
+                  <label class="mdl-radio mdl-color-text--primary" style="margin-left:-10px;">Gender:</label>
                   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="Male">
                   <input type="radio" id="Male" value="Male" class="mdl-radio__button" name="gender" />
                   <span class="mdl-radio__label">Male</span>
@@ -216,7 +241,7 @@ if(isset($_SESSION["user_id"]))
                   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="other">
                   <input type="radio" id="other" value="other" class="mdl-radio__button" name="gender" />
                   <span class="mdl-radio__label">Other</span>
-                  </label>
+                                    </label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="Email" id="email" name="email" />
@@ -232,7 +257,7 @@ if(isset($_SESSION["user_id"]))
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <label class="mdl-textfield__label" for="username">Mobile No.</label>
-                      <input class="mdl-textfield__input " type="text" id="phonemumber" name="phonenumber" value=""/>
+                      <input class="mdl-textfield__input " type="text" id="phonemumber" pattern="[0-9]{10}"name="phonenumber" value=""/>
                                          </div>
                                         <div class="mdl-card__actions ">
                 <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-button--raised mdl-js-ripple-effect" id="cone" name="sign_up" value="Sign up">
@@ -241,8 +266,8 @@ if(isset($_SESSION["user_id"]))
               </div>
                </div>
               </div>
-              <div class="mdl-cell-12-col" id="matrix2" style="display:flex;">
-        <div class="mdl-card mdl-shadow--6dp" style="height:30%;"id="matrix" >
+              <div class="mdl-grid" id="matrix2" style="display:flex;">
+        <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--6dp" id="matrix" >
         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:4px;">settings </i>Distance And Time</h2>
             </div>
@@ -255,8 +280,8 @@ if(isset($_SESSION["user_id"]))
 </div>
                   <div class="mdl-card mdl-shadow--2dp" style="display:none;text-align:center;margin:0 auto;margin-top:15px;" id="off_errors">
                   </div>
-        <div class="mdl-cell-12-col" id="ride_map">
-         <div class="mdl-card mdl-shadow--6dp " id="f_ride">
+        <div class="mdl-grid" id="ride_map">
+         <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--6dp " id="f_ride">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons"style="margin-top:3px;">search</i> Find a Ride</h2>
             </div>
@@ -284,7 +309,7 @@ if(isset($_SESSION["user_id"]))
               <button class="mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect" id="search1">Search</button>
             </div>
       </div>
-      <div class="mdl-card mdl-shadow--6dp " id="ride2">
+      <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--6dp " id="ride2">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text"><i class="material-icons" style="margin-top:3px;">add_circle_outline</i> Offer a Ride</h2>
             </div>
@@ -345,7 +370,7 @@ if(isset($_SESSION["user_id"]))
               ?>
             </div>
       </div>
-      <div id="map"></div>
+      <div id="map" class="mdl-cell mdl-cell--7-col-desktop mdl-cell--4-col-phone"></div>
       </div>
       <?php if(!isset($_SESSION['email'])){echo
       '<div id="first">
@@ -405,19 +430,21 @@ if(isset($_SESSION["user_id"]))
             }
             if(mysqli_num_rows($result1)==0)
             {
-              echo mysqli_num_rows($result1).'<div class="mdl-card mdl-shadow--2dp" style="margin:0 auto;margin-top:25px;width:65%">
+              echo '<div class="mdl-grid">
+              <div class=" mdl-cell mdl-cell--8-col">
+             <div class="mdl-card mdl-shadow--2dp" id="no_j" style="width:100%;" >
               <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
               <h2 class="mdl-card__title-text">Published Journeys</h2>
               </div>
               <div class="mdl-card__supporting-text"><h2>There are no journeys published by you</h2>
               </div>
-              </div>';
+              </div></div>';
             }
             else
             {
             echo '<div class="mdl-grid">
             <div class="mdl-cell mdl-cell--8-col" id="grid1">
-            <div class="mdl-card mdl-shadow--2dp" style="margin-top:25px;width:100%">
+            <div class="mdl-card mdl-shadow--2dp" style="width:100%">
             <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
             <h2 class="mdl-card__title-text">Published Journeys</h2>
             </div>
@@ -429,6 +456,8 @@ if(isset($_SESSION["user_id"]))
              $seats=$row["seats"];
             $oldDate=$row["j_date"];
               $time=$row["j_time"];
+              $len=strlen($time);
+              $time=substr($time,0,5);
               $length = strrpos($oldDate," ");
     $newDate = explode( "-" , substr($oldDate,$length));
       $output = $newDate[2]."/".$newDate[1]."/".$newDate[0];
@@ -436,11 +465,11 @@ if(isset($_SESSION["user_id"]))
             '<div style="display:flex;margin-top:15px;text-align:center">
             <div class="mdl-card mdl-shadow--2dp" style="margin-left:70px;width:80%;text-align:center">
            '
-            ."</br>".'From: <h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">'.$tripDeparture."</h6>".
-                       'To: <h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">'.$tripDestination."</h6>".
-                       'Date of Journey: <h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">'.$output."</h6>".
-                        'Time of Journey: <h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">'.$time."</h6>".
-                        'No of seats: <h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">'.$seats." left "."</h6></div></div>";
+            ."</br>".'<h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">From: '.$tripDeparture."</h6>".
+                       '<h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">To: '.$tripDestination."</h6>".
+                       '<h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">Date of Journey: '.$output."</h6>".
+                        '<h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">Time of Journey: '.$time."</h6>".
+                        '<h6 class="mdl-text mdl-color-text--blue"style="font-weight:bold;margin-left:10px;margin-top:-1px;">No of seats: '.$seats." left "."</h6></div></div>";
             }
             echo "</div></div></div>";
             }}
@@ -487,8 +516,7 @@ if(isset($_SESSION["user_id"]))
      </div></div>';
             }
             ?>
-              <div class="hello mdl-cell-12-col" >
-          <footer class = "mdl-mega-footer">
+                       <footer class = "mdl-mega-footer">
               <div class = "mdl-mega-footer__top-section">
                  <div class = "mdl-mega-footer__left-section">
                     <button class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--twitter"><i class="fa fa-twitter fa-fw"></i> Twitter</button>
@@ -527,7 +555,7 @@ if(isset($_SESSION["user_id"]))
                  </ul>
               </div>
            </footer>
-          </div>
+         
           </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
@@ -551,7 +579,6 @@ if(isset($_SESSION["user_id"]))
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
   crossorigin="anonymous"></script>
 <script src="src/js/app.js"></script>
-<script src="src/js/errors.js"></script>
 <script src="src/js/feed.js"></script>
 <script src="src/js/map.js"></script>
 <script src="src/js/profile.js"></script>
@@ -618,7 +645,10 @@ $("#find_date").datepicker({format:"dd/mm/yyyy",
                     });
                 },
             });
-            //console.log(document.getElementById('Male').parentNode.MaterialRadio.check());
-</script>
+            </script>
+            <script>
+            var fail="<?php if (isset($_SESSION["user_id"])){echo $g;}?>";
+            $(fail).prop("checked",true);
+              </script>
  </body>
 </html>

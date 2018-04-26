@@ -117,16 +117,20 @@ for ($value=0; $value<4; $value++) {
     $index = $myArray[$value];
     $sql .= $queryChoices[$index][$value];
 }
-$sql=$sql." and  user_id!=$h order by j_date desc";
+if(isset($_SESSION["user_id"]))
+{
+    $sql=$sql." and  user_id!=$h";
+}
+$sql=$sql." order by j_date desc";
 $result = mysqli_query($con, $sql);
 if(!$result){
     echo "ERROR: Unable to excecute: $sql. " . mysqli_error($con); exit;
 }
-
 if(mysqli_num_rows($result) == 0){
     echo '<div class="mdl-card mdl-shadow--2dp" style="margin-left:35px;margin-top:25px;width:65%"><h3 class="mdl-text mdl-color-text--primary">There are no journeys matching your search!<h3></div>'; exit;
 }
-echo '<div class="mdl-card mdl-shadow--2dp" style="margin-left:35px;margin-top:25px;width:65%"><div class="mdl-card__title mdl-color--primary mdl-color-text--white"><h2 class="mdl-card__title-text">Available Closest Journeys</h2></div><div class="mdl-card__supporting-text">';
+$var=1;
+echo '<div class="mdl-cell mdl-cell--8-col mdl-card mdl-shadow--2dp" ><div class="mdl-card__title mdl-color--primary mdl-color-text--white"><h2 class="mdl-card__title-text">Available Closest Journeys</h2></div><div class="mdl-card__supporting-text">';
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
     //check if the trip date is in the past
     $dateOK = 1;
@@ -140,12 +144,16 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
     //echo "I am here";
     $dateOK=intval($dateOK);
  // echo ($dateOK);
-   if($trip_Date>=$d){
+   if($trip_Date<=$d){
         //print trip
         //get trip user id
         $person_id = $row['user_id'];
         //run query to get user details
-        $sql2="SELECT * FROM users WHERE id='$person_id' and id!='$h'LIMIT 1";
+        $sql2="SELECT * FROM users WHERE id='$person_id'";
+         if(isset($_SESSION['user_id'])){
+           $sql2=$sql2."and id!='$h'";
+           }
+           $sql2=$sql2."LIMIT 1";
         $result2 = mysqli_query($con, $sql2);
         if($result2){
             //get user details
@@ -175,31 +183,22 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             <img src="'.$picture.'" style="width:120px;height:120px;margin:0 auto;margin-top:25px;"></div><div class="mdl-card mdl-shadow--2dp" style="margin-left:10px;width:80%;"><h6 class="mdl-text mdl-color-text--primary"style="margin-left:10px;margin-top:-1px;">'.$firstname."</br>".$tripDeparture."</br>".
                         $tripDestination."</br>".$source."</br>".
                         $time."</br>".
-                        $seats." left "."</br>".$phonenumber."</h6></div></div>";
+                        $seats." left "."</br>".$phonenumber."</h6>";
+                        if(isset($_SESSION["user_id"]))
+                        {
+                           echo "<div class=''style='margin-left:10px;'><label class='mdl-color-text--primary' style>Choose Seats:</label><input class='' type='number' min='1'style='width:40px;' max='$seats' pattern='[0-9]' > <button class='mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect' id='book' style='margin-left:80px;'>Book</button></div>";
+                        }
+                        echo "</div></div>";
+
                         }
     }
     else
     {
-        echo "<h2>There are no journeys published for this date</h2>";
+        $var=0;
     }
 }
+if($var==0)
+{
+    echo "There are no journeys published";
+}
 echo "</div></div>";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

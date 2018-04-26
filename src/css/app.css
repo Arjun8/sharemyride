@@ -21,7 +21,10 @@
 #loggedin,#loggedin1,#loggedin2
 {
   width:100%;
-  margin-top:25px;
+}
+#loggedin1,#loggedin2
+{
+  margin-top:15px;
 }
 input.radio { display: inline; }
 .mdl-navigation> a > i{
@@ -33,9 +36,6 @@ input.radio { display: inline; }
 #matrix
 {
   display: none;
-  width: 30%;
-  margin-left:25px;
-  margin-top:25px;
 }
 #front,#front1{
   width:90%;
@@ -81,30 +81,21 @@ input.radio { display: inline; }
   text-align:center;
   display: none;
   margin:0 auto;
-  margin-top:30px;
-  width:30%;
-  height:80%;
-}
+  margin-top:25px;
+  }
 #map
 {
   display: none;
   margin-top: 25px;
   margin-left: 25px;
-  width: 65%;
+  height:450px;
   background-color: grey;
-}
-#ride_map
-{
-  display: flex;
-  height: 100%;
-  width: 100%;
 }
 #f_ride,#ride2
 {
   display: none;
   margin-top:25px;
   margin-left:25px;
-  width:30%;
 }
 .hello
 {
