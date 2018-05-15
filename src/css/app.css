@@ -1,22 +1,6 @@
-.text-center {
-  text-align: center;
-}
-.nav1
-{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   opacity: 1; /* Firefox */
-}
-.ui-autocomplete {
-  z-index: 99999999999 !important;
-  }
-  .pac-container {
-    z-index: 99999999999 !important;
 }
 #loggedin,#loggedin1,#loggedin2
 {
@@ -39,13 +23,8 @@ input.radio { display: inline; }
 }
 #front,#front1{
   width:90%;
-  height:50%;
-  margin: 20px auto;
-}
-.demo-card-wide > .mdl-card__title {
-  color: #fff;
-  height:312px;
-  text-align: center;
+  height:100%;
+  margin-top: 20px;
 }
 .mdl-card__supporting-text
 {
@@ -65,42 +44,14 @@ input.radio { display: inline; }
 {
   position:absolute; top:40%; right:0;
 }
-#logon
-{
-  display:none;
-  text-align: center;
-  margin:0 auto;
-  margin-top:30px;
-  }
-  #ride2
-  {
-    display: none;
-  }
 #form1,#error
 {
   text-align:center;
-  display: none;
-  margin:0 auto;
-  margin-top:25px;
-  }
-#map
+}
+#map,#map1
 {
-  display: none;
-  margin-top: 25px;
-  margin-left: 25px;
-  height:450px;
+  height: 450px;
   background-color: grey;
-}
-#f_ride,#ride2
-{
-  display: none;
-  margin-top:25px;
-  margin-left:25px;
-}
-.hello
-{
-margin-top:110px;
-height: 240px;
 }
 mdl-button.mdl-button--twitter {
   color: rgb(63, 81, 181)

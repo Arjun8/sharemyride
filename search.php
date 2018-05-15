@@ -112,7 +112,7 @@ $queryChoice2 = [
 
 $queryChoices = [$queryChoice2, $queryChoice1];
 
-$sql = "SELECT * FROM off_ride WHERE ";
+$sql = "SELECT * FROM off_ride WHERE seats>0 and ";
 for ($value=0; $value<4; $value++) {
     $index = $myArray[$value];
     $sql .= $queryChoices[$index][$value];
@@ -127,10 +127,9 @@ if(!$result){
     echo "ERROR: Unable to excecute: $sql. " . mysqli_error($con); exit;
 }
 if(mysqli_num_rows($result) == 0){
-    echo '<div class="mdl-card mdl-shadow--2dp" style="margin-left:35px;margin-top:25px;width:65%"><h3 class="mdl-text mdl-color-text--primary">There are no journeys matching your search!<h3></div>'; exit;
+    echo '0 rows'; exit;
 }
 $var=1;
-echo '<div class="mdl-cell mdl-cell--8-col mdl-card mdl-shadow--2dp" ><div class="mdl-card__title mdl-color--primary mdl-color-text--white"><h2 class="mdl-card__title-text">Available Closest Journeys</h2></div><div class="mdl-card__supporting-text">';
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
     //check if the trip date is in the past
     $dateOK = 1;
@@ -173,32 +172,27 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             $time=$row["j_time"];
             $tripDeparture = $row['from_address'];
             $tripDestination = $row['to_address'];
+            $price=$row["price"];
             $seats=$row["seats"];
+            $length = strrpos($source," ");
+            $newDate = explode( "-" , substr($source,$length));
+              $output = $newDate[2]."/".$newDate[1]."/".$newDate[0];
+              $time=substr($time,0,5);
+              $id=$row["id"];
             //get trip price
          //   $tripPrice = $row['price'];
 
             //get seats available in the trip
               echo
             '<div style="display:flex;margin-top:10px;"><div class="mdl-card mdl-shadow--2dp" style="width:150px;height:120px;">
-            <img src="'.$picture.'" style="width:120px;height:120px;margin:0 auto;margin-top:25px;"></div><div class="mdl-card mdl-shadow--2dp" style="margin-left:10px;width:80%;"><h6 class="mdl-text mdl-color-text--primary"style="margin-left:10px;margin-top:-1px;">'.$firstname."</br>".$tripDeparture."</br>".
-                        $tripDestination."</br>".$source."</br>".
-                        $time."</br>".
-                        $seats." left "."</br>".$phonenumber."</h6>";
-                        if(isset($_SESSION["user_id"]))
-                        {
-                           echo "<div class=''style='margin-left:10px;'><label class='mdl-color-text--primary' style>Choose Seats:</label><input class='' type='number' min='1'style='width:40px;' max='$seats' pattern='[0-9]' > <button class='mdl-button mdl-button--colored mdl-button--raised mdl-js-button mdl-js-ripple-effect' id='book' style='margin-left:80px;'>Book</button></div>";
-                        }
-                        echo "</div></div>";
-
+            <img src="'.$picture.'" style="width:120px;height:120px;margin:0 auto;margin-top:25px;"></div><div class="mdl-card mdl-shadow--2dp" style="margin-left:10px;width:80%;">
+            <h6 class=" mdl-color-text--black"style="text-align:center;">'.$firstname."</br>From:".$tripDeparture."</br>To:".
+                        $tripDestination."</br>Date of journey:".$output."</br>Time of Journey:".
+                        $time."</br>";if($price!=" ")
+                        { echo "Price per seat:".$price."&#8377</br>";}echo
+                        "Seats:".$seats." left "."</br>Phonenmuber:".$phonenumber."</h6>";
+                        if(isset($_SESSION["user_id"])){
+                        echo "<div style='text-align:center'><form method='post' action='book.php'><input type='hidden' id='bookid' value='$id' name='bookid'><input type='submit' id='book' name='book'class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' style='width:100px;' value='Continue'></form></div>";} echo'</div></div>';
                         }
     }
-    else
-    {
-        $var=0;
-    }
-}
-if($var==0)
-{
-    echo "There are no journeys published";
-}
-echo "</div></div>";
+ }

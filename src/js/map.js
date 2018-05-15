@@ -1,30 +1,29 @@
-var map, infoWindow1, autocomplete2, autocomplete1, autocomplete3, autocomplete4, autocomplete5, marker, marker2, marker5, marker1, marker3, marker4, directionsService, directionsDisplay, service;
+var map, infoWindow1, autocomplete2, autocomplete1, autocomplete3, autocomplete4, autocomplete5, marker, marker2, marker5, marker1, marker3, marker4, directionsService, directionsDisplay, directionsService1, directionsDisplay1, service,service1;
 
 function fillinAddress4() {
     var place = autocomplete4.getPlace();
     marker4.setPosition(place.geometry.location);
     $("#to_lat").val(place.geometry.location.lat());
     $("#to_lang").val(place.geometry.location.lng());
-    
+
 }
 
 function fillinAddress5() {
     var place = autocomplete5.getPlace();
     marker5.setPosition(place.geometry.location);
 }
+
 function fillinAddress3() {
     infoWindow1.close();
     marker.setVisible(false);
     var place = autocomplete3.getPlace();
     marker3.setPosition(place.geometry.location);
+    console.log("Hello");
     $("#from_lat").val(place.geometry.location.lat());
     $("#from_lang").val(place.geometry.location.lng());
 }
 
 function initMap1() {
-    service = new google.maps.DistanceMatrixService();
-    directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: 31.2186,
@@ -32,6 +31,9 @@ function initMap1() {
         },
         zoom: 10
     });
+    service = new google.maps.DistanceMatrixService();
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(map);
     infoWindow1 = new google.maps.InfoWindow;
     var pos = {};
@@ -39,18 +41,15 @@ function initMap1() {
     var b = "";
     var d = " ";
     var adress;
-    var input3 = document.getElementById("off_from");
-    var input4 = document.getElementById('off_to');
-    var input5 = document.getElementById('pickup');
     var geocoder = new google.maps.Geocoder();
     var geocoder1 = new google.maps.Geocoder();
-    $("#to").change(function(){
-        var id="to";
-        geocodeAddress(geocoder, map,id);
+    $("#to").change(function () {
+        var id = "to";
+        geocodeAddress(geocoder, map, id);
     });
-    $("#from").change(function(){
-        var id="from";
-        geocodeAddress(geocoder, map,id);
+    $("#from").change(function () {
+        var id = "from";
+        geocodeAddress(geocoder, map, id);
     });
     marker3 = new google.maps.Marker({
         map: map,
@@ -73,13 +72,13 @@ function initMap1() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-       marker.setPosition(pos);
+            marker.setPosition(pos);
             a = (position.coords.latitude);
             b = (position.coords.longitude);
-       $("#find_from_lat").val(a);
-       $("#find_from_lang").val(b);
-        $("#from_lat").val(a);
-        $("#from_lang").val(b);
+            $("#find_from_lat").val(a);
+            $("#find_from_lang").val(b);
+            $("#from_lat").val(a);
+            $("#from_lang").val(b);
             d = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + a + "," + b + "&key=AIzaSyCKJv1twtfS4PpoUnQoXcHlFcWIK5yvUbk";
             $.getJSON(d, function (data) {
                 adress = data.results[0].formatted_address;
@@ -92,33 +91,6 @@ function initMap1() {
             var defaultBounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(31.280674, 75.687843),
                 new google.maps.LatLng(30.978235, 75.584792));
-            autocomplete3 = new google.maps.places.Autocomplete(input3, {
-                types: ['geocode']
-            });
-            autocomplete4 = new google.maps.places.Autocomplete(input4, {
-                types: ['geocode']
-            });
-            autocomplete5 = new google.maps.places.Autocomplete(input5, {
-                types: ['geocode']
-            });
-            autocomplete3.setTypes(['(cities)']);
-            autocomplete3.setComponentRestrictions({
-                'country': 'in'
-            });
-            autocomplete3.addListener('place_changed', fillinAddress3);
-            autocomplete4.setTypes(['(cities)']);
-            autocomplete4.setComponentRestrictions({
-                'country': 'in'
-            });
-            autocomplete4.addListener('place_changed', fillinAddress4);
-            autocomplete5.setTypes(['(cities)']);
-            autocomplete5.setComponentRestrictions({
-                'country': 'in'
-            });
-            autocomplete5.addListener('place_changed', fillinAddress5);
-            autocomplete3.setBounds(circle.getBounds());
-            autocomplete4.setBounds(circle.getBounds());
-            autocomplete5.setBounds(circle.getBounds());
             infoWindow1.setPosition(pos);
             infoWindow1.open(map);
             map.setCenter(pos);
@@ -127,13 +99,12 @@ function initMap1() {
         });
         $("#from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
-        });
-        $("#from").change(function(){
-            $(this).val();
+            //marker.setPosition(pos);
         });
         $("#off_from").focus(function () {
             $(this).parent().get(0).MaterialTextfield.change(adress);
-        });
+            //marker.setPosition(pos);
+          });
     } else {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow1, map.getCenter());
@@ -148,204 +119,131 @@ function handleLocationError(browserHasGeolocation, infoWindow1, pos) {
     infoWindow1.open(map);
 }
 $("#search1").click(function (e) {
-    $("#matrix").show();
-    $("#f_ride").hide();
-    $("#ride_map").show();
-    var formdata = $("#find_form").serialize();
-    e.preventDefault();
-    var destination = $("#to").val();
-    var source = $("#from").val();
-    marker.setVisible(false);
-    marker1.setVisible(false);
-    $.ajax({
-        type: "POST",
-        url: "search.php",
-        data: formdata,
-        cache: false
-    }).done(
-        function (html) {$("#matrix2").prepend(html);
-        });
-    var h = {
-        origin: source,
-        destination: destination,
-        travelMode: 'DRIVING',
-        drivingOptions: {
-            departureTime: new Date(Date.now() + 360000),
-            trafficModel: 'pessimistic'
-        },
-        unitSystem: google.maps.UnitSystem.METRIC
-    };
-    service.getDistanceMatrix({
-        origins: [source],
-        destinations: [destination],
-        travelMode: 'DRIVING',
-        drivingOptions: {
-            departureTime: new Date(Date.now() + 360000),
-        }
-    }, function (response, status) {
-        if (status == 'OK') {
-            var origins = response.originAddresses;
-            var destinations = response.destinationAddresses;
-
-            for (var i = 0; i < origins.length; i++) {
-                var results = response.rows[i].elements;
-                for (var j = 0; j < results.length; j++) {
-                    var element = results[j];
-                    var distance = element.distance.text;
-                    var duration = element.duration.text;
-                    var from = origins[i];
-                    var to = destinations[j];
-                    $("#details_from").empty().text("From: " + source);
-                    $("#details_to").empty().text("To: " + to);
-                    $("#distance").empty().text("Distance: " + distance);
-                    $("#time").empty().text("Duration: " + duration);
-                }
+            $("#matrix2").show();
+            $("#f_ride").show();
+            $("#ride_map").show();
+            var formdata = $("#find_form").serialize();
+            e.preventDefault();
+            var destination = $("#to").val();
+            var source = $("#from").val();
+            marker.setVisible(false);
+            marker1.setVisible(false);
+            var c = 0;
+            if (source === " " || source === "") {
+                c++;
+                $("#e_from").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the from field</h6>");
+            } else {
+                $("#e_from").css("display", "none");
             }
-        }
-    });
-    directionsService.route(h, function (result, status) {
-        if (status == 'OK') {
-            directionsDisplay.setDirections(result);
-        }
-    });
-});
-$("#search2").click(function (e) {
-    var formdata = $("#offer_form").serialize();
-    e.preventDefault();
-    var from=$("#off_from").val();
-    var to=$("#off_to").val();
-    var c=0;
-    if ( from== '' || from ==" ") {
+            if (destination === " " || destination === "") {
+                c++;
+                $("#e_to").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the to  field</h6>");
+            } else {
+                $("#e_to").css("display", "none");
+            }
+            var date = $("#find_date").val();
+            if (date === "" || date === " ") {
+                c++;
+                $("#e_date").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the date of journey</h6>");
+            } else {
+                $("#e_date").css("display", "none");
+            }
+            if (c === 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "search.php",
+                    data: formdata,
+                    cache: false
+                }).done(
+                    function (html) {
+                        if (html === "0 rows") {
+                            $("#ride_map1").show();
+                           // console.log("Hello"+html);
+                            $("#f_ride").hide();
+                            $("#matrix2").show();
+                            $("#matrix").show();
+                            $("#map").removeClass("mdl-cell--8-col").addClass("mdl-cell--4-col");
+                            $("#ride_map2").empty().show().html("<h2>There are no journeys published for this region</h2>");
+                        } else if (html === "") {
+                            $("#matrix2").show();
+                            $("#matrix").show();
+                            $("#ride_map1").show();
+                            $("#f_ride").hide();
+                            $("#map").removeClass("mdl-cell--8-col").addClass("mdl-cell--4-col");
+                            $("#ride_map2").empty().show().html("<h2>There are no journeys published for this region</h2>");
+                        } else {
+                            $("#matrix2").show();
+                            $("#ride_map1").show();
+                            $("#matrix").show();
+                            $("#f_ride").hide();
+                            $("#map").removeClass("mdl-cell--8-col").addClass("mdl-cell--4-col");
+                            $("#ride_map2").empty().show().html(html);
+                            //console.log(html);
+                        }});}
+                    var h = {
+                        origin: source,
+                        destination: destination,
+                        travelMode: 'DRIVING',
+                        drivingOptions: {
+                            departureTime: new Date(Date.now() + 360000),
+                            trafficModel: 'pessimistic'
+                        },
+                        unitSystem: google.maps.UnitSystem.METRIC
+                    }; service.getDistanceMatrix({
+                        origins: [source],
+                        destinations: [destination],
+                        travelMode: 'DRIVING',
+                        drivingOptions: {
+                            departureTime: new Date(Date.now() + 360000),
+                        }
+                    }, function (response, status) {
+                        if (status == 'OK') {
+                            var origins = response.originAddresses;
+                            var destinations = response.destinationAddresses;
 
-    $("#err1").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the from field</h6>");
-}
-else{
-    $("#err1").hide();
-}
- if(to==""||to==" ")
-{
-    c++;
-    $("#err2").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please fill the destination field</h6>");
-}
-else
-{
-    $("#err2").hide();
-    
-}
-var seats=$("#seats").val();
-if(seats==''||seats==" "||seats==="0")
-{c++;
-    $("#err3").show().empty().append("<h6 class='mdl-text mdl-color-text--red'>Please enter valid number of seats</h6>");
-}
-else
-{
-$("#err3").hide();
-}
-var pickup=$("#pickup").val();
-    if(pickup==" "||pickup=="")
-    {
-        $("#err4").show().empty().append("<h6 class='mdl-text mdl-color-text--green'>To increase your chances of getting a ride,add a pickup location</h6>");
-    }
-if(c===0)
-{
-
-    $.ajax({
-        type: "POST",
-        url: "ride.php",
-        data: formdata,
-        cache: false
-    }).done(
-        function (html) {
-            if (html === "continue") {
-                $("#matrix").show();
-                $("#err4").hide();
-                var desti = $("#off_to").val();
-                var otig = $("#off_from").val();
-                marker3.setVisible(false);
-                marker4.setVisible(false);
-                marker.setVisible(false);
-                var h = {
-                    origin: desti,
-                    destination: otig,
-                    travelMode: 'DRIVING',
-                    drivingOptions: {
-                        departureTime: new Date(Date.now() + 360000),
-                        trafficModel: 'pessimistic'
-                    },
-                    unitSystem: google.maps.UnitSystem.METRIC
-                };
-                service.getDistanceMatrix({
-                    origins: [desti],
-                    destinations: [otig],
-                    travelMode: 'DRIVING',
-                    drivingOptions: {
-                        departureTime: new Date(Date.now() + 360000),
-                    }
-                }, function (response, status) {
-                    if (status == 'OK') {
-                        var origins = response.originAddresses;
-                        var destinations = response.destinationAddresses;
-
-                        for (var i = 0; i < origins.length; i++) {
-                            var results = response.rows[i].elements;
-                            for (var j = 0; j < results.length; j++) {
-                                var element = results[j];
-                                var distance = element.distance.text;
-                                var duration = element.duration.text;
-                                var from = origins[i];
-                                var to = destinations[j];
-                                $("#matrix").css({"width":"80%","margin-left":"80px"});
-                                $("#p_ride").prepend("<h2 class='mdl-text mdl-color-text--primary' style='text-align:center;'>Congrats,You published A Ride!<h2>");
-                                $("#details_from").empty().text("From: " + from);
-                                $("#details_to").empty().text("To: " + to);
-                                $("#distance").empty().text("Distance: " + distance);
-                                $("#time").empty().text("Duration: " + duration);
+                            for (var i = 0; i < origins.length; i++) {
+                                var results = response.rows[i].elements;
+                                for (var j = 0; j < results.length; j++) {
+                                    var element = results[j];
+                                    var distance = element.distance.text;
+                                    var duration = element.duration.text;
+                                    var from = origins[i];
+                                    var to = destinations[j];
+                                    $("#details_from").empty().text("From: " + source);
+                                    $("#details_to").empty().text("To: " + to);
+                                    $("#distance").empty().text("Distance: " + distance);
+                                    $("#time").empty().text("Duration: " + duration);
+                                }
                             }
                         }
-                    }
-                });
-                directionsService.route(h, function (result, status) {
-                    if (status == 'OK') {
-                        directionsDisplay.setDirections(result);
-                    }
-                });
-                $("#off_errors").hide();
-            } else {
-                $("#off_errors").show();
-                $("#off_errors").empty().append(html);
-                var h = $("#ride_2").height();
-                $("#map").css("height", h);
-            }
+                    }); directionsService.route(h, function (result, status) {
+                        if (status == 'OK') {
+                           // directionsDisplay1.setMap(null);
+                            directionsDisplay.setDirections(result);
+                           }
+                    });
+                }
+            );
+        function geocodeAddress(geocoder, resultsMap, id) {
+            var address = document.getElementById(id).value;
+            geocoder.geocode({
+                'address': address
+            }, function (results, status) {
+                if (status === 'OK') {
+                    if (id === "from") {
+                        infoWindow1.close();
+                        var a = results[0].geometry.location;
+                        marker.setPosition(results[0].geometry.location);
+                        $("#find_from_lat").val(a.lat());
+                        $("#find_from_lang").val(a.lng());
+                    } else if (id === "to") {
+                        var a = results[0].geometry.location;
+                        marker1.setPosition(a);
+                        $("#find_to_lat").val(a.lat());
+                        $("#find_to_lang").val(a.lng());
 
+                    }
+                }
+            });
         }
-    );}
-    else
-    {
-        c=0;
-        $("#off_errors").hide();
-    }
-});
-function geocodeAddress(geocoder, resultsMap,id) {
-    var address = document.getElementById(id).value;
-    geocoder.geocode({'address': address}, function(results, status) {
-      if (status === 'OK') {
-        if(id==="from")
-        {
-        infoWindow1.close();
-        var a=results[0].geometry.location;
-        marker.setPosition(results[0].geometry.location);
-        $("#find_from_lat").val(a.lat());
-        $("#find_from_lang").val(a.lng());
-        }
-        else if(id==="to")
-        {
-            var a=results[0].geometry.location;
-            marker1.setPosition(a);
-            $("#find_to_lat").val(a.lat());
-            $("#find_to_lang").val(a.lng());
-
-        }
-      }
-    });
-  }
-google.maps.event.addDomListener(window, 'load', initMap1);
+        google.maps.event.addDomListener(window, 'load', initMap1);

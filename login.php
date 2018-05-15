@@ -38,19 +38,48 @@ $invalidPassword = '<h2><strong>Your password should be at least 6 characters lo
 		if($results!=1)
 		{
 			echo '<h2 class="mdl-text mdl-color-text--primary">Wrong email or password</h2>';
-			//alert("hello");
 		}
 		else
 		{
-				//echo '<h2>Hello'.$row["email"].'</p>';
-				echo "redirect";
 				$_SESSION["user_id"]=$row["id"];
 				$_SESSION["email"] = $row["email"];
 				$_SESSION["firstname"] = $row["first_name"];
 				$_SESSION["lastname"] = $row["last_name"];
 				$_SESSION["logout"]=false;
 				$_SESSION["phonenumber"]=$row["phonenumber"];
-
-		}
+				if(empty($_POST['rememberme'])){
+						echo "redirect";
+				}else{
+					$authentificator1 = bin2hex(openssl_random_pseudo_bytes(10));
+					$authentificator2 = openssl_random_pseudo_bytes(20);
+					function f1($a, $b){
+						$c = $a . "," . bin2hex($b);
+						return $c;
+					}
+					$cookieValue = f1($authentificator1, $authentificator2);
+					setcookie(
+						"rememberme",
+						$cookieValue,
+						time() + 1296000
+					);
+					function f2($a){
+						$b = hash('sha256', $a);
+						return $b;
+					}
+					$f2authentificator2 = f2($authentificator2);
+					$user_id = $_SESSION['user_id'];
+					$expiration = date('Y-m-d H:i:s', time() + 1296000);
+					$sql = "INSERT INTO rememberme
+					(`authentificator1`, `f2authentificator2`, `user_id`, `expires`)
+					VALUES
+					('$authentificator1', '$f2authentificator2', '$user_id', '$expiration')";
+					$result = mysqli_query($con, $sql);
+					if(!$result){
+						echo  '<h2 class="mdl-text mdl-color-text--primary">There was an error storing data to remember you next time.</h2>'.mysqli_error($con);
+					}else{
+						echo "redirect";
+					}
+				}
+			}
 	}
 ?>

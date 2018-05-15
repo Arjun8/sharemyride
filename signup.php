@@ -6,7 +6,7 @@ $missinglastname = '<p><strong>Please enter a Last name!</strong></p>';
 $missingEmail = '<p><strong>Please enter your email address!</strong></p>';
 $invalidEmail='<p><strong>Please enter a valid email!</strong></p>';
 $missingPassword = '<p><strong>Please enter a Password!</strong></p>';
-$invalidPassword = '<p><strong>Your password should be at least 6 characters long and inlcude one capital letter and one number!</strong></p>';
+$invalidPassword = '<p><strong>Your password should be at least 6 characters long and inlcude one capital letter ,one lowercase letter and one number or one special characters!</strong></p>';
 $differentPassword = '<p><strong>Passwords don\'t match!</strong></p>';
 $missingPassword2 = '<p><strong>Please confirm your password</strong></p>';
 $missingPhone = '<p><strong>Please enter your mobile number!</strong></p>';
@@ -82,8 +82,9 @@ else
 	}
 	$results = mysqli_num_rows($result);
 	if($results){
-		echo '<h3>That email is already registered. Do you want to log in?</h3><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--primary" id="login_3">Login</button>';  exit;
-	}
+		echo 'registered';    }
+    else
+    {
 	$sql = "INSERT INTO users (`email`, `password`,  `first_name`, `last_name`, `phonenumber`,`gender`) VALUES ('$email', '$password', '$firstname', '$lastname', '$phonenumber','$gender')";
 	$result = mysqli_query($con, $sql);
 	if(!$result){
@@ -94,6 +95,6 @@ else
 	{
         echo "redirect";
 		//header("location: login1.php");
-	}
+	}}
 }
 ?>
